@@ -111,7 +111,7 @@ User.findOne({name: "user1"}, function(err, foundUser){
     //   console.log("No Match");
     //}
   });
-})
+});
 });
 
 
