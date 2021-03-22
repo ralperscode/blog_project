@@ -60,7 +60,10 @@ User.findOne({}, function(err, foundUser){
 let posts = [];
 
 app.get("/", function(req, res){
-  res.render("home", {homeStartingContent: homeStartingContent, posts: posts});
+  User.findOne({name: "user1"}, function(err, foundUser){
+    posts = foundUser.posts
+    res.render("home", {homeStartingContent: homeStartingContent, posts: posts});
+  });
 });
 
 app.get("/contact", function(req, res){
@@ -76,23 +79,39 @@ app.get("/compose", function(req, res){
 });
 
 app.post("/compose", function(req, res){
-  const post = {
-    postTitle: req.body.postTitle,
-    postBody: req.body.postBody,
-  };
-  posts.push(post);
-  res.redirect("/");
-});
+  const newPost = new Post({
+    title: req.body.postTitle,
+    content: req.body.postBody
+  });
+  User.findOne({name: "user1"}, function(err, foundUser){
+    foundUser.posts.push(newPost);
+    foundUser.save().then(res.redirect("/"));
+    // // works
+    // foundUser.save(function(err){
+    //   if(!err){
+    //     res.redirect("/");
+    });
+  });
 
-app.get("/posts/:post", function(req, res){
-  posts.forEach(function(loopPost){
-    if (_.lowerCase(loopPost["postTitle"]) === _.lowerCase(req.params.post)){
-      // console.log("Match Found");
-      res.render("post", {post: loopPost});
+  // // make it async and use wait
+  // User.findOne({name: "user1"}, async function(err, foundUser){
+  //   foundUser.posts.push(newPost);
+  //   await foundUser.save();
+  //   res.redirect("/");
+//});
+
+app.get("/posts/:postID", function(req, res){
+User.findOne({name: "user1"}, function(err, foundUser){
+  posts = foundUser.posts
+  posts.forEach(function(post){
+    if (post._id == req.params.postID){
+      //console.log("Match Found");
+      res.render("post", {post: post});
     }//else{
     //   console.log("No Match");
     //}
   });
+})
 });
 
 
@@ -106,3 +125,11 @@ app.get("/posts/:post", function(req, res){
 app.listen(3000, function() {
   console.log("Server started on port 3000");
 });
+
+
+//expansion ideas
+
+//1. make authentication and login abilities for multiple users
+//2. make the blog posting more dynamic. Currently can only make a single paragraph.
+   // allow for multiple paragraphs. Text styling. Images. Etc.
+// fill out actual info on about / contact pages.
