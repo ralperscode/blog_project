@@ -15,8 +15,29 @@ body{
     font-size: 12px;
     letter-spacing: 5px;
 }
-.navbar-nav  li a:hover {
+
+.navbar-default{
+  padding-top: .72em;
+  padding-bottom: 0;
+}
+
+#mainNav{
+  position: sticky;
+  top: 0;
+  background-color: #eee;
+}
+.navbar-default .navbar-nav  li a:hover {
     color: #1abc9c !important;
+    background-color: lightgray;
+}
+
+@media (max-width: 767px){
+#home a{
+  padding-top: 0;
+  }
+  .navbar-brand{
+    margin-bottom: 0;
+  }
 }
 
 .footer-padding {
