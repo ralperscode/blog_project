@@ -1,6 +1,22 @@
+html{
+  font-size: 1em;
+}
+
 body{
+  font-family: 'Libre Baskerville', 'PT Serif', serif;
+
   min-height: 100vh;
   position: relative;
+  font-size: 1em;
+}
+
+h1{
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5em;
+}
+
+a{
+  font-size: 0.9em;
 }
 .container-fluid {
     padding-top: 70px;
@@ -25,10 +41,42 @@ body{
   position: sticky;
   top: 0;
   background-color: #eee;
+  z-index: 10;
 }
 .navbar-default .navbar-nav  li a:hover {
     color: #1abc9c !important;
     background-color: lightgray;
+}
+
+/* feature div styling */
+.feature-div{
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  height: 323px;
+  /* margin-top: -20px; */
+}
+
+.feature-div-headers{
+  display: inline-block;
+  position: relative;
+  left: 10.8em;
+  top:10em;
+  color: black;
+}
+
+.feature-div-headers a{
+  text-decoration: none;
+  color: black;
+}
+
+.feature-div-headers a:link{
+  text-decoration: none;
+}
+
+.feature-div-headers a:visited{
+  text-decoration: none;
 }
 
 @media (max-width: 767px){
