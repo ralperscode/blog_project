@@ -10,12 +10,26 @@
 </article>
 <!-- <img src="/images/party_cat.jpg" alt="party cat"> -->
 <div class="container">
-<h1>Home</h1>
-<p> <%= homeStartingContent %> </p>
+<!-- <h1>Home</h1> -->
+<!-- <p> <%= homeStartingContent %> </p> -->
 
 <% posts.forEach(function(post){ %>
-    <h1> <%= post.title %> </h1>
-    <p> <%= post.content.slice(0, 100) + "..." %> <a href="/posts/<%=post._id%>">Read More</a> </p>
+  <article class="recent">
+    <!-- add a posted on date -->
+    <div class="container article-content">
+      <a href="/posts/<%=post._id%>" class="article-thumbnail">
+        <img src="/images/party_cat.jpg" alt="party cat">
+      </a>
+      <div class=" post-date">
+        <p>Posted On</p>
+      </div>
+      <h1> <%= post.title %> </h1>
+      <div class="article-preview">
+        <p> <%= post.content.slice(0, 100) + "..." %> <a href="/posts/<%=post._id%>">Read More</a> </p>
+      </div>
+    </div>
+  </article>
+    <hr>
 <% }); %>
 
 <%- include("partials/footer") -%>

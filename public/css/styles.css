@@ -18,6 +18,13 @@ h1{
 a{
   font-size: 0.9em;
 }
+
+/* over-ride bootstrap container width on large screens. leaves support for media queries
+when screen size shrinks */
+.container{
+  max-width: 1000px;
+}
+
 .container-fluid {
     padding-top: 70px;
     padding-bottom: 70px;
@@ -55,13 +62,11 @@ a{
   background-repeat: no-repeat;
   background-attachment: scroll;
   height: 323px;
-  /* margin-top: -20px; */
+  margin-bottom: 5.25em;
 }
 
 .feature-div-headers{
-  display: inline-block;
   position: relative;
-  left: 10.8em;
   top:10em;
   color: black;
 }
@@ -86,6 +91,39 @@ a{
   .navbar-brand{
     margin-bottom: 0;
   }
+}
+
+/* article styling */
+
+hr{
+  margin-top: 25px;
+  margin-bottom: 25px;
+  border-top: 2.5px solid #eee;
+}
+
+.article-content{
+  padding: 0;
+  line-height: 1.7;
+  font-size: 1.12em;
+}
+
+.article-content p{
+  display: inline;
+}
+
+.article-thumbnail{
+  float: right;
+  margin-top: 1.27em;
+  margin-right: 0.9em;
+}
+
+.article-thumbnail img{
+  max-width: 256px;
+}
+
+.article-preview{
+margin-right: 19.6em;
+margin-top: 1em;
 }
 
 .footer-padding {
