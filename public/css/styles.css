@@ -126,6 +126,64 @@ margin-right: 19.6em;
 margin-top: 1em;
 }
 
+/* quill editor styling */
+
+.quill-div{
+  max-width: 90%;
+  position: relative;
+  margin: auto;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value='']::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value='']::before
+{
+  content: 'Sans Serif';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value='libre-baskerville']::before{
+  content: 'Libre Baskerville';
+  font-family: 'Libre Baskerville';
+  font-size: 0.65em;
+}
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value='libre-baskerville']::before
+{
+  content: 'Libre Baskerville';
+  font-family: 'Libre Baskerville';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value='pt-serif']::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value='pt-serif']::before
+{
+  content: 'PT Serif';
+  font-family: 'PT Serif';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value='playfair-display']::before
+{
+  content: 'Playfair Display';
+  font-family: 'Playfair Display';
+  font-size: 0.8em;
+}
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value='playfair-display']::before
+{
+  content: 'Playfair Display';
+  font-family: 'Playfair Display';
+}
+
+.ql-font-libre-baskerville{
+  font-family: 'Libre Baskerville', 'serif';
+}
+
+.ql-font-pt-serif{
+  font-family: 'PT Serif', 'serif'
+}
+
+.ql-font-playfair-display{
+  font-family: 'Playfair Display', 'serif';
+}
+
+/* footer styling */
+
 .footer-padding {
 	padding-bottom: 60px;
 }
