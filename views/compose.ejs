@@ -1,7 +1,7 @@
 <%- include("partials/header") -%>
 <div class="container compose-page-contents">
   <h1>Compose</h1>
-  <form action="/compose" method="post">
+  <form id="compose-form" action="/compose" method="post">
     <div class="form-group">
       <label for="title">Title</label>
       <input class="form-control" id="title" type="text" name="postTitle">
@@ -13,13 +13,24 @@
         </div>
       </div>
 
-      <!-- <textarea class="form-control" id="body" type="text" name="postBody" rows="3"></textarea> -->
+      <input type="hidden" id="body" name="postBody" rows="3"></input>
     </div>
-    <button class= "btn btn-primary" type="submit" name="composeButton">Publish</button>
+    <button class= "btn btn-primary" type="button" onClick="parseQuill()" name="composeButton">Publish</button>
   </form>
 </div>
 
-
+<script type="text/javascript">
+  function parseQuill(){
+    document.getElementById("body").value = encodeURIComponent(JSON.stringify(quill.getContents()));
+    document.getElementById("compose-form").submit();
+  }
+  // works in as much as it creates the db entry
+  // function parseQuill(){
+  //   const delta = quill.getContents();
+  //   document.getElementById("body").setAttribute("value", delta);
+  //   document.getElementById("compose-form").submit();
+  // }
+</script>
 
 <!-- Include the Quill library -->
 <!-- pick one? -->
