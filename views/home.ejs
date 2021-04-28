@@ -24,7 +24,11 @@
       </div>
       <h1> <%= post.title %> </h1>
       <div class="article-preview">
-        <%- post.decoded_HTML %>
+        <% if(post.contentText){ %>
+          <p><%= post.contentText.slice(0, 200) + "..." %> </p>
+        <% }else{ %>
+          <%- post.decoded_HTML %>
+        <% } %>
         <a href="/posts/<%=post._id%>">Read More</a>
         <!-- see bottom of file for removed line -->
       </div>
@@ -34,5 +38,13 @@
 <% }); %>
 
 <%- include("partials/footer") -%>
+
+<%# could do something like this but would need to make it a script after page loads %>
+
+<%# console.log("Type of decodedHTML: " + typeof(post.decoded_HTML)) %>
+<%# const parser = new DOMParser(); %>
+<%# const newDoc = parser.parseFromString(decodedHTML, "text/html"); %>
+<%# const plainText = newDoc.body.firstChild.textContent; %>
+<%# console.log("Text: " + plainText); %>
 
 <!-- <p> re add ejs tags post.content.slice(0, 100) + "..." %> <a href="/posts/ re add ejs tags post._id%>">Read More</a> </p> -->

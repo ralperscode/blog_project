@@ -15,7 +15,7 @@ const app = express();
 
 app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({limit: '50mb',extended: true}));
 app.use(express.static("public"));
 
 // mongoose setup and schemas
@@ -24,7 +24,8 @@ mongoose.connect('mongodb://localhost:27017/blogDB', { useNewUrlParser: true, us
 
 const postSchema = new mongoose.Schema({
   title: String,
-  content: String
+  content: String,
+  contentText: String
 });
 
 const Post = mongoose.model("Post", postSchema);
@@ -92,7 +93,8 @@ app.post("/compose", function(req, res){
   console.log("Body: " + req.body.postBody);
   const newPost = new Post({
     title: req.body.postTitle,
-    content: req.body.postBody
+    content: req.body.postBody,
+    contentText: req.body.postBodyText
   });
   User.findOne({name: "user1"}, function(err, foundUser){
     foundUser.posts.push(newPost);

@@ -14,6 +14,7 @@
       </div>
 
       <input type="hidden" id="body" name="postBody" rows="3"></input>
+      <input type="hidden" id="bodyText" name="postBodyText"></input>
     </div>
     <button class= "btn btn-primary" type="button" onClick="parseQuill()" name="composeButton">Publish</button>
   </form>
@@ -22,6 +23,7 @@
 <script type="text/javascript">
   function parseQuill(){
     document.getElementById("body").value = encodeURIComponent(JSON.stringify(quill.getContents()));
+    document.getElementById("bodyText").value = quill.getText();
     document.getElementById("compose-form").submit();
   }
   // works in as much as it creates the db entry
