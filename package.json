@@ -14,6 +14,7 @@
     "express": "^4.16.3",
     "lodash": "^4.17.20",
     "mongoose": "^5.11.19",
-    "quill-delta-to-html": "^0.12.0"
+    "quill-delta-to-html": "^0.12.0",
+    "quill-image-resize-module": "^3.0.0"
   }
 }
