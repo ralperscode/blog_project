@@ -42,11 +42,23 @@
 
 <!-- Initialize Quill editor -->
 <script>
+  // quill imports
   var FontAttributor = Quill.import('attributors/class/font');
+  var BlockEmbed = Quill.import('blots/block/embed');
+
+  // whitelist for supported fonts
 FontAttributor.whitelist = [
   'libre-baskerville', 'pt-serif', 'playfair-display'
 ];
+
+// extend quill to support dividers in post content (horizontal rule)
+class DividerBlot extends BlockEmbed { }
+DividerBlot.blotName = 'divider';
+DividerBlot.tagName = 'hr'
+
+// register new quill features
 Quill.register(FontAttributor, true);
+Quill.register(DividerBlot);
 
   var toolbarOptions = [
   // font options with defaults from theme. Custom size options
@@ -78,6 +90,29 @@ var quill = new Quill('#editor', {
   },
   theme: 'snow',
   placeholder: "Write and format post here."
+});
+
+// add divider button
+var qlTollbar = document.querySelector(".ql-toolbar");
+
+dividerButton = document.createElement("button");
+        dividerButton.innerHTML = '<i class="fas fa-minus"></i>';
+        dividerButton.classList.add("ql-divider")
+        dividerButton.setAttribute("type", "button");
+        dividerButton.id="divider-button";
+
+dividerButtonSpan = document.createElement("span");
+        dividerButtonSpan.classList.add("ql-formats");
+        dividerButtonSpan.appendChild(dividerButton);
+        qlTollbar.appendChild(dividerButtonSpan);
+
+// implement divider functionality
+document.querySelector('.ql-divider').addEventListener("click", function() {
+  let range = quill.getSelection(true);
+  quill.insertText(range.index, '\n', Quill.sources.USER);
+  quill.insertEmbed(range.index + 1, 'divider', true, Quill.sources.USER);
+  quill.setSelection(range.index + 2, Quill.sources.SILENT);
+
 });
 </script>
 

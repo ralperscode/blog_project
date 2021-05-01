@@ -18,7 +18,12 @@ h1{
 a{
   font-size: 0.9em;
 }
-
+hr{
+  max-width: 25rem;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  border-top: 2.5px solid #eee;
+}
 /* over-ride bootstrap container width on large screens. leaves support for media queries
 when screen size shrinks */
 .container{
@@ -95,10 +100,8 @@ when screen size shrinks */
 
 /* article styling */
 
-hr{
-  margin-top: 25px;
-  margin-bottom: 25px;
-  border-top: 2.5px solid #eee;
+.article-hr{
+  max-width: 100%;
 }
 
 .article-content{

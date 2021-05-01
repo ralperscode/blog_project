@@ -120,15 +120,28 @@ User.findOne({name: "user1"}, function(err, foundUser){
     if (post._id == req.params.postID){
         const decoded = JSON.parse(decodeURIComponent(post.content));
         const converter = new QuillDeltaToHtmlConverter(decoded.ops);
+        const dividerOp = {
+          insert: {
+            type: "divider",
+            value: true
+          },
+          attributes: {
+            renderAsBlock: true
+          }
+        }
+        converter.renderCustomWith(function(dividerOp){
+          if (dividerOp.insert.type === "divider"){
+            return "<hr>"
+          } else {
+            console.log("custom blot convert error");
+          }
+        });
         const decodedHTML = converter.convert();
         console.log(decodedHTML);
         post.decoded_HTML = decodedHTML;
         res.render("post", {post: post});
       }
-      //console.log("Match Found");
-    }//else{
-    //   console.log("No Match");
-    //}
+    }
   );
 });
 });
