@@ -68,7 +68,7 @@ app.get("/", function(req, res){
       const decoded = JSON.parse(decodeURIComponent(posts[i].content));
       const converter = new QuillDeltaToHtmlConverter(decoded.ops);
       const decodedHTML = converter.convert();
-      console.log(decodedHTML);
+      // console.log(decodedHTML);
       posts[i].decoded_HTML = decodedHTML;
     }
     res.render("home", {homeStartingContent: homeStartingContent, posts: posts});
@@ -90,7 +90,7 @@ app.get("/compose", function(req, res){
 app.post("/compose", function(req, res){
   console.log("New post composed!");
   console.log("title: " + req.body.postTitle);
-  console.log("Body: " + req.body.postBody);
+  // console.log("Body: " + req.body.postBody);
   const newPost = new Post({
     title: req.body.postTitle,
     content: req.body.postBody,
@@ -137,7 +137,7 @@ User.findOne({name: "user1"}, function(err, foundUser){
           }
         });
         const decodedHTML = converter.convert();
-        console.log(decodedHTML);
+        // console.log(decodedHTML);
         post.decoded_HTML = decodedHTML;
         res.render("post", {post: post});
       }
