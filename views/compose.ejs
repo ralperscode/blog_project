@@ -36,6 +36,7 @@
 
 <!-- Include the Quill library -->
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<!-- scripts for image resize and drop modules -->
 <script src="/JS/image-resize.min.js"></script>
 <script src="/JS/image-drop.min.js"></script>
 
@@ -45,7 +46,7 @@
   // quill imports
   var FontAttributor = Quill.import('attributors/class/font');
   var BlockEmbed = Quill.import('blots/block/embed');
-
+  var Image = Quill.import('formats/image');
   // whitelist for supported fonts
 FontAttributor.whitelist = [
   'libre-baskerville', 'pt-serif', 'playfair-display'
@@ -56,9 +57,15 @@ class DividerBlot extends BlockEmbed { }
 DividerBlot.blotName = 'divider';
 DividerBlot.tagName = 'hr'
 
+// extend quill to support images from URL's
+class ImageURL extends Image{}
+ImageURL.blotName = 'imgURL';
+ImageURL.tagName = 'img'
+
 // register new quill features
 Quill.register(FontAttributor, true);
 Quill.register(DividerBlot);
+Quill.register(ImageURL);
 
   var toolbarOptions = [
   // font options with defaults from theme. Custom size options
@@ -108,6 +115,16 @@ dividerButtonSpan = document.createElement("span");
         dividerButtonSpan.appendChild(dividerButton);
         qlTollbar.appendChild(dividerButtonSpan);
 
+// add image URL button
+imgURLButton = document.createElement("button");
+        imgURLButton.innerHTML = '<i class="fas fa-window-maximize"></i>';
+        imgURLButton.classList.add("ql-imgURL")
+        imgURLButton.setAttribute("type", "button");
+        imgURLButton.id="imgURL-button";
+
+const formatSpans = document.querySelectorAll(".ql-formats")
+formatSpans[7].appendChild(imgURLButton);
+
 // implement divider functionality
 document.querySelector('.ql-divider').addEventListener("click", function() {
   let range = quill.getSelection(true);
@@ -115,6 +132,13 @@ document.querySelector('.ql-divider').addEventListener("click", function() {
   quill.insertEmbed(range.index + 1, 'divider', true, Quill.sources.USER);
   quill.setSelection(range.index + 2, Quill.sources.SILENT);
 
+});
+
+// implement insert image from URL functionality
+document.querySelector('.ql-imgURL').addEventListener("click", function() {
+  var range = quill.getSelection();
+  var value = prompt('What is the image URL');
+  quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
 });
 </script>
 
