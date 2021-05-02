@@ -6,3 +6,8 @@ npm-debug.log
 
 quillTest.html
 ideas.txt
+
+//delete these files later
+FigureOptions.js
+TaskerFigure.js
+tsconfig.json
