@@ -117,27 +117,32 @@ app.get("/posts/:postID", function(req, res){
 User.findOne({name: "user1"}, function(err, foundUser){
   let posts = foundUser.posts;
   posts.forEach(function(post){
+    // find the relevant post
     if (post._id == req.params.postID){
+      // decode the URI component and grap the delta ops array
         const decoded = JSON.parse(decodeURIComponent(post.content));
-        const converter = new QuillDeltaToHtmlConverter(decoded.ops);
-        const dividerOp = {
-          insert: {
-            type: "divider",
-            value: true
-          },
-          attributes: {
-            renderAsBlock: true
-          }
-        }
-        converter.renderCustomWith(function(dividerOp){
-          if (dividerOp.insert.type === "divider"){
+        const ops = decoded.ops;
+        // setup for QDTHTML
+        const converter = new QuillDeltaToHtmlConverter(ops, {
+          inlineStyles: true, // render styles inline since quill css is dependent on editor
+        });
+
+        // tell QDTHTML how to render custom blots
+        converter.renderCustomWith(function(ops){
+          if (ops.insert.type === "divider"){
+            console.log("divider match")
             return "<hr>"
+          } else if(ops.insert.type === "caption") {
+            console.log("caption match")
+            // returns a div with align set based on quill delta attributes
+            return '<div align='+ ops.attributes.align + '>' + ops.insert.value + '</div>'
           } else {
-            console.log("custom blot convert error");
+            console.log("custom blot not registered");
           }
         });
+        // convert the delta to HTML
         const decodedHTML = converter.convert();
-        // console.log(decodedHTML);
+        // add this as a key to the post before sending it to render
         post.decoded_HTML = decodedHTML;
         res.render("post", {post: post});
       }

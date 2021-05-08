@@ -18,6 +18,13 @@
     </div>
     <button class= "btn btn-primary" type="button" onClick="parseQuill()" name="composeButton">Publish</button>
   </form>
+  <!-- div for caption creation -->
+  <div class="container" id="captionDiv" style="display: none">
+    <p id="imgSelectorP"> Select an image to add a caption to </p>
+    <input type="text" id="captionText" name="captionText" placeholder="Caption text">
+    <button id="addCaption" type="button" name="button">Add</button>
+    <button id="cancelCaption" type="button" name="button">Cancel</button>
+  </div>
 </div>
 
 <script type="text/javascript">
@@ -62,10 +69,32 @@ class ImageURL extends Image{}
 ImageURL.blotName = 'imgURL';
 ImageURL.tagName = 'img'
 
+// extend quill to support image captions
+class CaptionBlot extends BlockEmbed{
+  // create a node whose innerHTML will be the value passed to it at creation
+  static create(value){
+    let node = super.create();
+    node.innerHTML = value
+    return node;
+  }
+  // set renderAsBlock to true for quill-delta-to-html conversion
+  formats() {
+    return {renderAsBlock: true}
+  }
+  // provide node's content for rendering
+  static value(node){
+    return node.innerHTML
+  }
+}
+CaptionBlot.blotName = "caption";
+CaptionBlot.tagName = "div";
+CaptionBlot.className = "ql-caption-wrapper" // className necessary so quill differentiates between default div types
+
 // register new quill features
 Quill.register(FontAttributor, true);
 Quill.register(DividerBlot);
 Quill.register(ImageURL);
+Quill.register(CaptionBlot);
 
   var toolbarOptions = [
   // font options with defaults from theme. Custom size options
@@ -94,16 +123,20 @@ Quill.register(ImageURL);
 var quill = new Quill('#editor', {
   modules: {
     toolbar: toolbarOptions,
-    imageResize: {},
+    // setup quill image resize and drop modules
+    imageResize: {
+      modules:['Resize', 'DisplaySize']
+    },
     imageDrop: true,
   },
   theme: 'snow',
   placeholder: "Write and format post here."
 });
 
-// add divider button
+// add custom blot buttons
 var qlTollbar = document.querySelector(".ql-toolbar");
 
+// add divider button
 dividerButton = document.createElement("button");
         dividerButton.innerHTML = '<i class="fas fa-minus"></i>';
         dividerButton.classList.add("ql-divider")
@@ -122,19 +155,104 @@ imgURLButton = document.createElement("button");
         imgURLButton.setAttribute("type", "button");
         imgURLButton.id="imgURL-button";
 
+// grab all format spans so button can be added to right group (currently hard coded)
 const formatSpans = document.querySelectorAll(".ql-formats")
 formatSpans[7].appendChild(imgURLButton);
 
-// implement divider functionality
+// add caption button
+captionButton = document.createElement("button");
+        captionButton.innerHTML = '<i class="fab fa-cuttlefish"></i>';
+        captionButton.classList.add("ql-caption");
+        captionButton.setAttribute("type", "button");
+        captionButton.id="caption-button"
+
+formatSpans[7].appendChild(captionButton);
+
+// get caption creation div elements
+captionDiv = document.getElementById('captionDiv');
+cancelBTN = document.getElementById('cancelCaption');
+addBTN = document.getElementById('addCaption');
+imgSelectorP = document.getElementById('imgSelectorP');
+
+cancelBTN.addEventListener("click", function(){
+  captionDiv.style.display ="none"
+});
+
+addBTN.addEventListener("click", function(){
+  // get caption and dom node of image to caption
+  let caption = document.getElementById('captionText').value
+  let checkedRadio = document.querySelector('input[type="radio"]:checked');
+  let imgToCaption = document.getElementById(checkedRadio.value);
+  // create p element for holding the caption
+  let captionP = document.createElement("p");
+  captionP.classList.add("ql-caption-p");
+  captionP.innerText = caption;
+  // make inner caption div to hold image and caption and allow for formatting
+  let innerCaptionDiv = document.createElement('div');
+  innerCaptionDiv.classList.add("ql-caption-inner-div")
+  innerCaptionDiv.appendChild(imgToCaption);
+  innerCaptionDiv.appendChild(captionP);
+
+  // get the blot of the image that is being captioned
+  const blot = Quill.find(imgToCaption);
+  // find it's index
+  const index = blot.offset(quill.scroll);
+  // total blot length
+  const length = quill.getLength();
+  // get current contents of quill
+  const contents = quill.getContents();
+  // slice contents from beginning up until image (returns delta)
+  const startOps = contents.slice(0, index);
+  // slice contents from image to end
+  if(length > index){
+    console.log("setting endOps");
+    var endOps = contents.slice(index + 1, length);
+  }
+  // set new delta contents - image to caption is now removed
+  if(endOps){
+    var newOps = startOps.concat(endOps);
+  } else{
+    var newOps = startOps
+  }
+  quill.setContents(newOps);
+  // insert the new caption div containing the image and it's caption at the appropriate index
+  quill.insertEmbed(index, 'caption', innerCaptionDiv.outerHTML, Quill.sources.USER);
+  // close the caption div
+  captionDiv.style.display ="none"
+});
+
+// custom toolbar button functionality
+
+// captions
+document.querySelector('.ql-caption').addEventListener("click", function() {
+  // find all images in document and add an id to it
+  imgList = document.querySelectorAll('img');
+  imgList.forEach(function(img, idx){
+    // only add the id if it is a new image
+    if(img.id === ""){
+      img.id = "image" + (idx + 1);
+      // insert radio button and label for the new image so it can be selected for captioning
+      imgSelectorP.insertAdjacentHTML('afterend',
+      '<input type="radio" name="selectImage" id="for'+img.id+'" value="'+img.id+'">'
+      +'<label for="for'+img.id+'">' + img.id + '</label> <br>');
+    }
+  });
+  // show the caption div
+  captionDiv.style.display = "block"
+});
+
+// divider
 document.querySelector('.ql-divider').addEventListener("click", function() {
+  // get the range where the user currently has selected with their cursor
   let range = quill.getSelection(true);
+  // insert new line, divider, and place cursor below divider
   quill.insertText(range.index, '\n', Quill.sources.USER);
   quill.insertEmbed(range.index + 1, 'divider', true, Quill.sources.USER);
   quill.setSelection(range.index + 2, Quill.sources.SILENT);
 
 });
 
-// implement insert image from URL functionality
+// image from URL
 document.querySelector('.ql-imgURL').addEventListener("click", function() {
   var range = quill.getSelection();
   var value = prompt('What is the image URL');

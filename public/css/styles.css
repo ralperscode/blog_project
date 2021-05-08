@@ -207,6 +207,27 @@ margin-top: 1em;
   font-family: 'Playfair Display', 'serif';
 }
 
+/* inline block so caption inner div width defaults to the width of it's contents (ie image width) */
+.ql-caption-inner-div{
+  display:inline-block;
+}
+
+.ql-caption-p{
+  color: #757575;
+  width:inherit;
+  text-align: center;
+}
+/* captionDiv styling */
+
+#captionDiv label{
+  display: inline-block;
+  margin-left: 10px;
+}
+
+#captionText{
+  margin-top: 10px;
+}
+
 /* footer styling */
 
 .footer-padding {
