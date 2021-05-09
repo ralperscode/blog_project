@@ -1,7 +1,12 @@
 // custom toolbar button functionality
 
 // captions
+const form = document.querySelector("form");
+const composeHeader = document.querySelector(".compose-page-contents h1");
 document.querySelector('.ql-caption').addEventListener("click", function() {
+  // blur rest of page when button is clicked
+  form.classList.add("blur");
+  composeHeader.classList.add("blur");
   // find all images in document and add an id to it
   imgList = document.querySelectorAll('img');
   imgList.forEach(function(img, idx){
@@ -11,7 +16,7 @@ document.querySelector('.ql-caption').addEventListener("click", function() {
       // insert radio button and label for the new image so it can be selected for captioning
       imgSelectorP.insertAdjacentHTML('afterend',
       '<input type="radio" name="selectImage" id="for'+img.id+'" value="'+img.id+'">'
-      +'<label for="for'+img.id+'">' + img.id + '</label> <br>');
+      +'<label for="for'+img.id+'">' + img.outerHTML + '</label> <br>');
     }
   });
   // show the caption div

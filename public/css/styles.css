@@ -219,13 +219,43 @@ margin-top: 1em;
 }
 /* captionDiv styling */
 
+#captionDiv{
+  text-align: center;
+  position: relative;
+  width: fit-content;
+  background-color: #eee;
+  bottom: 17rem;
+  padding: 1.2rem;
+  border-radius: 4px;
+  color: black;
+}
+
 #captionDiv label{
   display: inline-block;
   margin-left: 10px;
 }
 
+#captionDiv button{
+  border: 1px;
+  border-radius: 4px;
+}
+
 #captionText{
-  margin-top: 10px;
+  display:block;
+  margin: 10px auto;
+
+}
+
+label img{
+  width:7.5rem;
+}
+
+.bg-warning{
+  background-color: #ff7b54;
+}
+
+.blur{
+  filter:blur(5px);  /* blur rest of page when caption div opens */
 }
 
 /* footer styling */
