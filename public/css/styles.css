@@ -139,6 +139,10 @@ margin-top: 1em;
   padding-top: 10px;
 }
 
+.btn{
+  margin-bottom: 10px;
+}
+
 /* quill editor styling */
 
 .quill-div{
