@@ -223,7 +223,7 @@ margin-top: 1em;
 }
 /* captionDiv styling */
 
-#captionDiv{
+.popupDiv{
   text-align: center;
   position: relative;
   width: fit-content;
@@ -234,12 +234,12 @@ margin-top: 1em;
   color: black;
 }
 
-#captionDiv label{
+.captionDiv label{
   display: inline-block;
   margin-left: 10px;
 }
 
-#captionDiv button{
+.popupDiv button{
   border: 1px;
   border-radius: 4px;
 }
@@ -247,7 +247,11 @@ margin-top: 1em;
 #captionText{
   display:block;
   margin: 10px auto;
+}
 
+#fileUploadInput{
+  margin: 10px auto;
+  width: 57%;
 }
 
 label img{
