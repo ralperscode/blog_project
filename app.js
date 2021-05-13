@@ -6,6 +6,8 @@ const ejs = require("ejs");
 const _ = require("lodash");
 const mongoose = require("mongoose");
 const QuillDeltaToHtmlConverter = require('quill-delta-to-html').QuillDeltaToHtmlConverter;
+// const multer = require('multer');
+// const GridFsStorage = require('multer-gridfs-storage');
 
 const homeStartingContent = "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
 const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
@@ -24,7 +26,7 @@ mongoose.connect('mongodb://localhost:27017/blogDB', { useNewUrlParser: true, us
 
 const postSchema = new mongoose.Schema({
   title: String,
-  content: String,
+  content: Buffer,
   contentText: String
 });
 
@@ -90,10 +92,12 @@ app.get("/compose", function(req, res){
 app.post("/compose", function(req, res){
   console.log("New post composed!");
   console.log("title: " + req.body.postTitle);
-  // console.log("Body: " + req.body.postBody);
+  // store conents as Buffer to save space in mongoDB
+  const binaryBody = new Buffer.from(req.body.postBody, "utf-8");
   const newPost = new Post({
     title: req.body.postTitle,
-    content: req.body.postBody,
+    // content: req.body.postBody,
+    content: binaryBody,
     contentText: req.body.postBodyText
   });
   User.findOne({name: "user1"}, function(err, foundUser){
@@ -119,8 +123,10 @@ User.findOne({name: "user1"}, function(err, foundUser){
   posts.forEach(function(post){
     // find the relevant post
     if (post._id == req.params.postID){
-      // decode the URI component and grap the delta ops array
-        const decoded = JSON.parse(decodeURIComponent(post.content));
+        // convert buffer to string, decode the URI component, and grab the delta ops array
+        const utf8String = post.content.toString('utf8');
+        console.log("utf8String: " + utf8String);
+        const decoded = JSON.parse(decodeURIComponent(utf8String));
         const ops = decoded.ops;
         // setup for QDTHTML
         const converter = new QuillDeltaToHtmlConverter(ops, {
