@@ -66,13 +66,18 @@ let posts = [];
 app.get("/", function(req, res){
   User.findOne({name: "user1"}, function(err, foundUser){
     let posts = foundUser.posts
-    for(let i = 0; i< posts.length; i++){
-      const decoded = JSON.parse(decodeURIComponent(posts[i].content));
-      const converter = new QuillDeltaToHtmlConverter(decoded.ops);
-      const decodedHTML = converter.convert();
-      // console.log(decodedHTML);
-      posts[i].decoded_HTML = decodedHTML;
-    }
+    // // this logic isn't needed anymore? handled at specific post get route
+    // // won't be necessary since all new posts will have a textContent field for rendering preview
+    // for(let i = 0; i< posts.length; i++){
+    //   // temp check for post content being a buffer or not
+    //   const utf8String = posts[i].content.toString('utf8');
+    //   const decoded = JSON.parse(decodeURIComponent(utf8String));
+    //   // const decoded = JSON.parse(decodeURIComponent(posts[i].content));
+    //   const converter = new QuillDeltaToHtmlConverter(decoded.ops);
+    //   const decodedHTML = converter.convert();
+    //   // console.log(decodedHTML);
+    //   posts[i].decoded_HTML = decodedHTML;
+    // }
     res.render("home", {homeStartingContent: homeStartingContent, posts: posts});
   });
 });
@@ -125,7 +130,7 @@ User.findOne({name: "user1"}, function(err, foundUser){
     if (post._id == req.params.postID){
         // convert buffer to string, decode the URI component, and grab the delta ops array
         const utf8String = post.content.toString('utf8');
-        console.log("utf8String: " + utf8String);
+        // console.log("utf8String: " + utf8String);
         const decoded = JSON.parse(decodeURIComponent(utf8String));
         const ops = decoded.ops;
         // setup for QDTHTML
