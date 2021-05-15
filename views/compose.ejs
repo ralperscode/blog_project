@@ -25,19 +25,6 @@
     <button id="addCaption" class="bg-primary" type="button" name="button">Add</button>
     <button id="cancelCaption" class="bg-warning" type="button" name="button">Cancel</button>
   </div>
-  <!-- div for image thumbnail upload on post submit -->
-  <div class="container popupDiv" id="thumbnailUploadDiv" style="display: none">
-    <p>Select post thumbnail image.</p>
-    <input id="imgUpload" type="radio" name="thumbnailImage">
-    <label id="imgUploadLabel" for="imgUpload">Upload New Image</label>
-    <input id="fileUploadInput" type="file" accept="image/*" onchange="validateFileType()" name="thumbnailImage" style="display: none">
-    <br>
-    <input id="defaultImg" type="radio" name="thumbnailImage">
-    <label for="defaultImg">Use default image</label>
-    <br>
-    <button class="bg-primary" type="button">Confirm</button>
-    <button class="bg-warning" type="button">Cancel</button>
-  </div>
 </div>
 
 <!-- What follows is all of my JS files and code. Could be more clean and efficient with use of modules -->

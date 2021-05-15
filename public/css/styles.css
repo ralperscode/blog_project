@@ -249,6 +249,35 @@ margin-top: 1em;
   margin: 10px auto;
 }
 
+/* thumbnail image upload page */
+.fileUploadContainer{
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height:200px;
+}
+.fileUploadDiv{
+  max-width: 25rem;
+  height: 100%;
+  text-align: center;
+  background-color: #eee;
+  bottom: 17rem;
+  padding: 1.2rem;
+  border-radius: 4px;
+  color: black;
+}
+
+.fileUploadDiv p{
+  margin: 10px 0;
+}
+
+.fileUploadDiv button{
+  margin-top: 5px;
+}
+
 #fileUploadInput{
   margin: 10px auto;
   width: 57%;

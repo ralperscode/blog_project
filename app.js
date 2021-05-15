@@ -163,7 +163,10 @@ User.findOne({name: "user1"}, function(err, foundUser){
 });
 
 
-
+//temp get route for rendering page to style
+app.get("/compose/imgUpload", function(req, res){
+  res.render("thumbnail");
+});
 
 
 
