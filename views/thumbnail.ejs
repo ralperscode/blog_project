@@ -17,8 +17,10 @@
     <!-- div for image thumbnail upload -->
     <div class="container fileUploadContainer">
       <div class="container fileUploadDiv" id="thumbnailUploadDiv">
-        <form class="" action="index.html" method="post" type="multipart/form-data">
+        <form class="" action="/compose/imgUpload" method="post" enctype="multipart/form-data">
           <p>Select post thumbnail image.</p>
+          <!-- change value to be post _ID sent from compose submit -->
+          <input type="hidden" id="postID" name="postID" value="ObjectId('609d0450e2451ddee4a73c69')">
           <input id="imgUpload" type="radio" name="thumbnailImage">
           <label id="imgUploadLabel" for="imgUpload">Upload New Image</label>
           <input id="fileUploadInput" type="file" accept="image/*" onchange="validateFileType()" name="thumbnailImage" style="display: none">
@@ -31,6 +33,8 @@
         </form>
       </div>
     </div>
+
+    <script src="/JS/thumbnailUpload.js"></script>
   </body>
 
 <%- include("partials/footer") -%>

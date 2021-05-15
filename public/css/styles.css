@@ -257,10 +257,10 @@ margin-top: 1em;
   bottom: 0;
   left: 0;
   right: 0;
-  height:200px;
+  height: fit-content;
 }
 .fileUploadDiv{
-  max-width: 25rem;
+  max-width: 27rem;
   height: 100%;
   text-align: center;
   background-color: #eee;

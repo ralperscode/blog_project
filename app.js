@@ -6,8 +6,9 @@ const ejs = require("ejs");
 const _ = require("lodash");
 const mongoose = require("mongoose");
 const QuillDeltaToHtmlConverter = require('quill-delta-to-html').QuillDeltaToHtmlConverter;
-// const multer = require('multer');
+const multer = require('multer');
 // const GridFsStorage = require('multer-gridfs-storage');
+const path = require("path");
 
 const homeStartingContent = "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
 const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
@@ -19,6 +20,37 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({limit: '50mb',extended: true}));
 app.use(express.static("public"));
+
+// Multer setup
+
+var storage = multer.memoryStorage()
+var upload = multer({
+  storage: storage, limits: {fileSize: 6000000, files: 1},
+  fileFilter: function(req, file, cb){
+    checkFileType(file, cb);
+  }
+});
+
+// Check File Type
+function checkFileType(file, cb){
+  console.log("checking types");
+  // Allowed ext
+  const filetypes = /jpeg|jpg|png|/;
+  // Check ext
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  // Check mime
+  const mimetype = filetypes.test(file.mimetype);
+  // If both exist, than upload is of valid type. Otherwise, send error.
+  if(mimetype && extname){
+      console.log("all good");
+      return cb(null,true);
+  } else {
+      // send error to next middleware in chain
+      // THINK ABOUT THIS MORE. NOT SURE IF IT SERVES ANY REAL PURPOSE
+      console.log("sending error")
+      cb('Error: Images Only!');
+    }
+  }
 
 // mongoose setup and schemas
 
@@ -167,6 +199,19 @@ User.findOne({name: "user1"}, function(err, foundUser){
 app.get("/compose/imgUpload", function(req, res){
   res.render("thumbnail");
 });
+
+app.post("/compose/imgUpload", function (req, res) {
+  upload.single("thumbnailImage")(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      // A Multer error occurred when uploading.
+      console.log("Multer error: "+ err);
+    } else if (err) {
+      console.log("Unknown error: " + err);
+    }
+    console.log(req.file)
+    res.send("meow");
+  });
+})
 
 
 
