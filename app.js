@@ -7,8 +7,13 @@ const _ = require("lodash");
 const mongoose = require("mongoose");
 const QuillDeltaToHtmlConverter = require('quill-delta-to-html').QuillDeltaToHtmlConverter;
 const multer = require('multer');
-// const GridFsStorage = require('multer-gridfs-storage');
-const path = require("path");
+const GridFsStorage = require('multer-gridfs-storage');
+// currently not used
+// const methodOverride = require("method-override"); //enable delete operation for files.
+
+// native modules
+const path = require("path"); //used for grabbing file extension names
+const crypto = require("crypto"); //used for generating random file names
 
 const homeStartingContent = "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
 const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
@@ -21,9 +26,32 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({limit: '50mb',extended: true}));
 app.use(express.static("public"));
 
-// Multer setup
+// Multer setup and storage engine
 
-var storage = multer.memoryStorage()
+const storage = new GridFsStorage({
+  url: 'mongodb://localhost:27017/blogDB',
+  file: (req, file) => {
+    return new Promise((resolve, reject) => {
+      // encrypt filename before storing it
+      crypto.randomBytes(16, (err, buf) => {
+        // if error, use built in promise rejection
+        if(err) {
+          return reject(err);
+        }
+        // if no error, create filename from crypto buffer, adding original file extension to the end
+        const filename = buf.toString('hex') + path.extname(file.originalname);
+        // set file info with appropriate file and bucket names
+        const fileInfo = {
+          filename: filename,
+          bucketName: 'thumbnails' //matches the name of the collection that will be setup when connecting to GridFs
+        };
+        // resolve promise, returning the created fileInfo
+        resolve(fileInfo);
+      });
+    });
+  }
+});
+
 var upload = multer({
   storage: storage, limits: {fileSize: 6000000, files: 1},
   fileFilter: function(req, file, cb){
@@ -55,6 +83,17 @@ function checkFileType(file, cb){
 // mongoose setup and schemas
 
 mongoose.connect('mongodb://localhost:27017/blogDB', { useNewUrlParser: true, useUnifiedTopology: true });
+const conn = mongoose.connection;
+// connect to GridFs
+
+let gfs;
+conn.on('open', () => {
+  gfs = new mongoose.mongo.GridFSBucket(conn.db, {
+    bucketName: "thumbnails"
+  });
+});
+
+// Schemas and Models
 
 const postSchema = new mongoose.Schema({
   title: String,
@@ -208,8 +247,21 @@ app.post("/compose/imgUpload", function (req, res) {
     } else if (err) {
       console.log("Unknown error: " + err);
     }
-    console.log(req.file)
-    res.send("meow");
+    // console.log(req.file)
+    if(!req.file){
+      console.log("no file!");
+      // get post id from input and find that post
+      // update post thumbnail content to point to default image
+      // default image will be saved in thumbnails.files as well
+      // id of default will be stored in user profile
+      // res.json({file: req.file});
+    } else{
+      console.log("file uploaded")
+      // get post id from input and find that post
+      // get id of document representing the newly uploaded file
+      // update post thumbnail content to point to new image
+      // res.json({file: req.file});
+    }
   });
 })
 

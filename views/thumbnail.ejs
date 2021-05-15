@@ -21,11 +21,11 @@
           <p>Select post thumbnail image.</p>
           <!-- change value to be post _ID sent from compose submit -->
           <input type="hidden" id="postID" name="postID" value="ObjectId('609d0450e2451ddee4a73c69')">
-          <input id="imgUpload" type="radio" name="thumbnailImage">
+          <input id="imgUpload" type="radio" name="thumbnailImageRadio">
           <label id="imgUploadLabel" for="imgUpload">Upload New Image</label>
           <input id="fileUploadInput" type="file" accept="image/*" onchange="validateFileType()" name="thumbnailImage" style="display: none">
           <br>
-          <input id="defaultImg" type="radio" name="thumbnailImage">
+          <input id="defaultImg" type="radio" name="thumbnailImageRadio">
           <label for="defaultImg">Use default image</label>
           <br>
           <button class="bg-primary" type="submit">Confirm</button>
