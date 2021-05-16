@@ -30,7 +30,8 @@ document.querySelector('.ql-divider').addEventListener("click", function() {
   // insert new line, divider, and place cursor below divider
   quill.insertText(range.index, '\n', Quill.sources.USER);
   quill.insertEmbed(range.index + 1, 'divider', true, Quill.sources.USER);
-  quill.setSelection(range.index + 2, Quill.sources.SILENT);
+  quill.insertText(range.index + 2, '\n', {"align": "center"}, Quill.sources.USER);
+  quill.setSelection(range.index + 3, Quill.sources.SILENT);
 
 });
 

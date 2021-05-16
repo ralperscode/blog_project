@@ -31,6 +31,7 @@ app.use(express.static("public"));
 const mongoURI = process.env.MONGODB
 const storage = new GridFsStorage({
   url: mongoURI,
+  options: { useNewUrlParser: true, useUnifiedTopology: true },
   file: (req, file) => {
     return new Promise((resolve, reject) => {
       // encrypt filename before storing it
@@ -307,7 +308,7 @@ app.get("/images/:imgId", function(req, res){
         message: 'Could not find that file'
       });
     } else{
-      // Open new download stream and pipe it's data to res 
+      // Open new download stream and pipe it's data to res
       let downloadStream = gfs.openDownloadStream(files[0]._id);
       downloadStream.pipe(res);
     }
