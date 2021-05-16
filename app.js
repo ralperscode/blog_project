@@ -14,6 +14,7 @@ const GridFsStorage = require('multer-gridfs-storage');
 // native modules
 const path = require("path"); //used for grabbing file extension names
 const crypto = require("crypto"); //used for generating random file names
+require('dotenv').config();
 
 const homeStartingContent = "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
 const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
@@ -27,9 +28,9 @@ app.use(bodyParser.urlencoded({limit: '50mb',extended: true}));
 app.use(express.static("public"));
 
 // Multer setup and storage engine
-
+const mongoURI = process.env.MONGODB
 const storage = new GridFsStorage({
-  url: 'mongodb://localhost:27017/blogDB',
+  url: mongoURI,
   file: (req, file) => {
     return new Promise((resolve, reject) => {
       // encrypt filename before storing it
@@ -82,7 +83,7 @@ function checkFileType(file, cb){
 
 // mongoose setup and schemas
 
-mongoose.connect('mongodb://localhost:27017/blogDB', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 const conn = mongoose.connection;
 // connect to GridFs
 
@@ -98,7 +99,8 @@ conn.on('open', () => {
 const postSchema = new mongoose.Schema({
   title: String,
   content: Buffer,
-  contentText: String
+  contentText: String,
+  thumbnail: String
 });
 
 const Post = mongoose.model("Post", postSchema);
@@ -112,7 +114,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "User must have a password"]
   },
-  posts: [postSchema]
+  posts: [postSchema],
+  defaultImg: String
 });
 
 const User = mongoose.model("User", userSchema);
@@ -125,7 +128,8 @@ User.findOne({}, function(err, foundUser){
     const user1 = new User({
       name: "user1",
       password: "password",
-      posts: []
+      posts: [],
+      defaultImg: '609ff764728bd54084c26ff6'
     });
     user1.save();
   }
@@ -178,7 +182,7 @@ app.post("/compose", function(req, res){
   });
   User.findOne({name: "user1"}, function(err, foundUser){
     foundUser.posts.push(newPost);
-    foundUser.save().then(res.redirect("/"));
+    foundUser.save().then(res.render("thumbnail", {post: newPost}));
     // // works
     // foundUser.save(function(err){
     //   if(!err){
@@ -240,30 +244,46 @@ app.get("/compose/imgUpload", function(req, res){
 });
 
 app.post("/compose/imgUpload", function (req, res) {
-  upload.single("thumbnailImage")(req, res, function (err) {
-    if (err instanceof multer.MulterError) {
-      // A Multer error occurred when uploading.
-      console.log("Multer error: "+ err);
-    } else if (err) {
-      console.log("Unknown error: " + err);
-    }
-    // console.log(req.file)
-    if(!req.file){
-      console.log("no file!");
-      // get post id from input and find that post
-      // update post thumbnail content to point to default image
-      // default image will be saved in thumbnails.files as well
-      // id of default will be stored in user profile
-      // res.json({file: req.file});
-    } else{
-      console.log("file uploaded")
-      // get post id from input and find that post
-      // get id of document representing the newly uploaded file
-      // update post thumbnail content to point to new image
-      // res.json({file: req.file});
-    }
+  User.findOne({name: "user1"}, function(err, foundUser){
+    let posts = foundUser.posts;
+    upload.single("thumbnailImage")(req, res, function (err) {
+      if (err instanceof multer.MulterError) {
+        // A Multer error occurred when uploading.
+        console.log("Multer error: "+ err);
+      } else if (err) {
+        console.log("Unknown error: " + err);
+      }
+      // console.log(req.file)
+      if(!req.file){
+        console.log("no file!");
+        posts.forEach(function(post){
+          // get post id from input and find that post
+          if (post._id == req.body.postID){
+            // update post thumbnail content to point to default image
+            // id of default is stored in user profile
+            post.thumbnail = foundUser.defaultImg
+            foundUser.save().then(res.redirect("/"));
+            // console.log("updated post: " + post);
+            // note: default image will be saved in thumbnails.files as well
+          }
+        });
+         // res.json({file: req.file});
+      } else{
+        console.log("file uploaded")
+        posts.forEach(function(post){
+          // get post id from input and find that post
+          if (post._id == req.body.postID){
+            // update post thumbnail content so it equals newly uploaded file
+            post.thumbnail = req.file.id
+            foundUser.save().then(res.redirect("/"));
+            // console.log("updated post: " + post);
+          }
+        });
+         // res.json({file: req.file});
+      }
+    });
   });
-})
+});
 
 
 

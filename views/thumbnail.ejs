@@ -20,7 +20,7 @@
         <form class="" action="/compose/imgUpload" method="post" enctype="multipart/form-data">
           <p>Select post thumbnail image.</p>
           <!-- change value to be post _ID sent from compose submit -->
-          <input type="hidden" id="postID" name="postID" value="ObjectId('609d0450e2451ddee4a73c69')">
+          <input type="hidden" id="postID" name="postID" value= <%= post._id %> >
           <input id="imgUpload" type="radio" name="thumbnailImageRadio">
           <label id="imgUploadLabel" for="imgUpload">Upload New Image</label>
           <input id="fileUploadInput" type="file" accept="image/*" onchange="validateFileType()" name="thumbnailImage" style="display: none">
