@@ -17,7 +17,8 @@
     <!-- add a posted on date -->
     <div class="container article-content">
       <a href="/posts/<%=post._id%>" class="article-thumbnail">
-        <img src="/images/party_cat.jpg" alt="party cat">
+        <!-- post.thumbnail contains thumbnail document id. send this to download stream route as img source -->
+        <img src="images/<%= post.thumbnail %>" alt="post thumbnail">
       </a>
       <div class="post-date">
         <p>Posted On</p>

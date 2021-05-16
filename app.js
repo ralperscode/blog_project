@@ -129,7 +129,7 @@ User.findOne({}, function(err, foundUser){
       name: "user1",
       password: "password",
       posts: [],
-      defaultImg: '609ff764728bd54084c26ff6'
+      defaultImg: '60a0ff7ecbf20ab18cbc72b5'
     });
     user1.save();
   }
@@ -141,19 +141,27 @@ let posts = [];
 app.get("/", function(req, res){
   User.findOne({name: "user1"}, function(err, foundUser){
     let posts = foundUser.posts
-    // // this logic isn't needed anymore? handled at specific post get route
-    // // won't be necessary since all new posts will have a textContent field for rendering preview
-    // for(let i = 0; i< posts.length; i++){
-    //   // temp check for post content being a buffer or not
-    //   const utf8String = posts[i].content.toString('utf8');
-    //   const decoded = JSON.parse(decodeURIComponent(utf8String));
-    //   // const decoded = JSON.parse(decodeURIComponent(posts[i].content));
-    //   const converter = new QuillDeltaToHtmlConverter(decoded.ops);
-    //   const decodedHTML = converter.convert();
-    //   // console.log(decodedHTML);
-    //   posts[i].decoded_HTML = decodedHTML;
-    // }
     res.render("home", {homeStartingContent: homeStartingContent, posts: posts});
+    // // Additional check for file type content -> not used currently.
+    // // I think the checks before uploading are sufficient for determining file type
+    // get all thumbnail image files
+    // gfs.find().toArray((err, files) => {
+    //   if (!files || files.length === 0){
+    //     return res.status(200).json({
+    //       success: false,
+    //       message: 'No files found'
+    //     });
+    //   }
+    // files.map(file => {
+    //   if (file.contentType === "image/jpeg" || file.contentType === "image/png"){
+    //     file.isImage = true;
+    //   } else{
+    //     file.isImage = false;
+    //   }
+    // });
+    // res.json({file: files});
+    // res.render("home", {homeStartingContent: homeStartingContent, posts: posts})
+    // });
   });
 });
 
@@ -285,8 +293,26 @@ app.post("/compose/imgUpload", function (req, res) {
   });
 });
 
-
-
+// Route for getting images back from Grid FS Bucket
+// Used in home.ejs as source attribute for thumbnail images
+app.get("/images/:imgId", function(req, res){
+  //toArray still needed because find returns a cursor???
+       // honest question, haven't tried removing toArray
+  let imgId = new mongoose.mongo.ObjectId(req.params.imgId);
+  // check if image exists
+  gfs.find({_id: imgId}).toArray((err, files) =>{
+    if (!files[0] || files.length === 0) {
+      return res.status(200).json({
+        success: false,
+        message: 'Could not find that file'
+      });
+    } else{
+      // Open new download stream and pipe it's data to res 
+      let downloadStream = gfs.openDownloadStream(files[0]._id);
+      downloadStream.pipe(res);
+    }
+  });
+});
 
 
 
