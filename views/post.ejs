@@ -1,6 +1,15 @@
 <%- include("partials/header") -%>
 
   <div class="container">
+    <br>
+    <div class="post-date">
+      <!-- remove conditional after clearing db. needed now because not all posts have a date -->
+      <% if(!post.datePosted) { %>
+        <p>Posted On</p>
+      <% } else { %>
+      <p>Posted On <%= post.datePosted.toLocaleDateString("en-US", {day: "numeric", month: "long", year: "numeric"}) %></p>
+      <% } %>
+    </div>
     <h1> <%= post.title %> </h1>
     <br>
     <%- post.decoded_HTML %>

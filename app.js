@@ -101,7 +101,8 @@ const postSchema = new mongoose.Schema({
   title: String,
   content: Buffer,
   contentText: String,
-  thumbnail: String
+  thumbnail: String,
+  datePosted: Date
 });
 
 const Post = mongoose.model("Post", postSchema);
@@ -187,7 +188,8 @@ app.post("/compose", function(req, res){
     title: req.body.postTitle,
     // content: req.body.postBody,
     content: binaryBody,
-    contentText: req.body.postBodyText
+    contentText: req.body.postBodyText,
+    datePosted: new Date()
   });
   User.findOne({name: "user1"}, function(err, foundUser){
     foundUser.posts.push(newPost);

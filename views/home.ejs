@@ -21,7 +21,12 @@
         <img src="images/<%= post.thumbnail %>" alt="post thumbnail">
       </a>
       <div class="post-date">
-        <p>Posted On</p>
+        <!-- remove conditional after clearing db. needed now because not all posts have a date -->
+        <% if(!post.datePosted) { %>
+          <p>Posted On</p>
+        <% } else { %>
+        <p>Posted On <%= post.datePosted.toLocaleDateString("en-US", {day: "numeric", month: "long", year: "numeric"}) %></p>
+        <% } %>
       </div>
       <h1> <%= post.title %> </h1>
       <div class="article-preview">
