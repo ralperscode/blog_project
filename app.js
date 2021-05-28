@@ -102,7 +102,8 @@ const postSchema = new mongoose.Schema({
   content: Buffer,
   contentText: String,
   thumbnail: String,
-  datePosted: Date
+  datePosted: Date,
+  featuredPost: Boolean
 });
 
 const Post = mongoose.model("Post", postSchema);
@@ -112,12 +113,21 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "User must have a name"]
   },
+  email: {
+    type: String,
+    required: [true, "User must have an email"]
+  },
   password: {
     type: String,
     required: [true, "User must have a password"]
   },
+  blogTitle: String,
   posts: [postSchema],
-  defaultImg: String
+  featuredPost: postSchema,
+  defaultImg: String,
+  bannerImg: String,
+  socialMediaLinks: {facebookLink: "", twitterLink: "", instaLink: "", githubLink: ""},
+
 });
 
 const User = mongoose.model("User", userSchema);
@@ -130,8 +140,11 @@ User.findOne({}, function(err, foundUser){
     const user1 = new User({
       name: "user1",
       password: "password",
+      email: "randomEmail@gmail.com",
       posts: [],
-      defaultImg: '60a0ff7ecbf20ab18cbc72b5'
+      defaultImg: '60a0ff7ecbf20ab18cbc72b5',
+      bannerImg: '60a0ff7ecbf20ab18cbc72b5',
+      socialMediaLinks: {facebookLink: "facebook.com", twitterLink:"twitter.com"}
     });
     user1.save();
   }
