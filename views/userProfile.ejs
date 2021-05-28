@@ -1,0 +1,139 @@
+<%- include("partials/header") -%>
+
+<div class="container">
+  <h1>Profile Settings</h1>
+  <div class="two-card-col-wrapper">
+    <div class="profileDiv about-card two-card-col">
+      <h3 class="settings-header">About You</h3>
+      <form class="about-you-form" action="" method="">
+        <div class="inputs">
+          <input type="text" id="name-input" name="" value="Ryan" placeholder="Name" readonly>
+          <span class="buttons">
+            <button type="button" id="name-edit-btn" class="profileEdit-btn about-btn">Edit</button>
+            <button type="button" id="name-cancel-btn" class="profileEdit-btn cancel-btn" hidden="true">Cancel
+            <button type="button" id="name-save-btn" class="profileEdit-btn save-btn" hidden="true">Save</button>
+          </span>
+          <hr>
+          <input type="email" id="email-input" name="" value="" placeholder="Email" readonly>
+          <span class="buttons">
+            <button type="button" id="email-edit-btn" class="profileEdit-btn about-btn">Edit</button>
+            <button type="button" id="email-cancel-btn" class="profileEdit-btn cancel-btn" hidden="true">Cancel
+            <button type="button" id="email-save-btn" class="profileEdit-btn save-btn" hidden="true">Save</button>
+          </span>
+          <hr>
+          <input type="password" id="password-input" name="" value="" placeholder="Change Password" readonly>
+          <span class="buttons">
+            <button type="button" id="password-edit-btn" class="profileEdit-btn about-btn">Edit</button>
+            <button type="button" id="password-cancel-btn" class="profileEdit-btn cancel-btn" hidden="true">Cancel
+            <button type="button" id="password-save-btn" class="profileEdit-btn save-btn" hidden="true">Save</button>
+          </span>
+          <hr>
+          <h4 class="settings-header">Social Media Links</h4>
+          <input type="text" id="fb-input" name="" value="" placeholder="Facebook" readonly>
+          <span class="buttons">
+            <button type="button" id="fb-edit-btn" class="profileEdit-btn about-btn">Edit</button>
+            <button type="button" id="fb-cancel-btn" class="profileEdit-btn cancel-btn" hidden="true">Cancel
+            <button type="button" id="fb-save-btn" class="profileEdit-btn save-btn" hidden="true">Save</button>
+          </span>
+          <hr>
+          <input type="text" id="twitter-input" name="" value="" placeholder="Twitter" readonly>
+          <span class="buttons">
+            <button type="button" id="twitter-edit-btn" class="profileEdit-btn about-btn">Edit</button>
+            <button type="button" id="twitter-cancel-btn" class="profileEdit-btn cancel-btn" hidden="true">Cancel
+            <button type="button" id="twitter-save-btn" class="profileEdit-btn save-btn" hidden="true">Save</button>
+          </span>
+          <hr>
+          <input type="text" id="insta-input" name="" value="" placeholder="Instagram" readonly>
+          <span class="buttons">
+            <button type="button" id="insta-edit-btn" class="profileEdit-btn about-btn">Edit</button>
+            <button type="button" id="insta-cancel-btn" class="profileEdit-btn cancel-btn" hidden="true">Cancel
+            <button type="button" id="insta-save-btn" class="profileEdit-btn save-btn" hidden="true">Save</button>
+          </span>
+          <hr>
+          <input type="text" id="github-input" name="" value="" placeholder="Github" readonly>
+          <span class="buttons">
+            <button type="button" id="github-edit-btn" class="profileEdit-btn about-btn">Edit</button>
+            <button type="button" id="github-cancel-btn" class="profileEdit-btn cancel-btn" hidden="true">Cancel
+            <button type="button" id="github-save-btn" class="profileEdit-btn save-btn" hidden="true">Save</button>
+          </span>
+        </div>
+      </form>
+    </div>
+
+    <div class="profileDiv blog-card two-card-col">
+      <h3 class="settings-header">About Your Blog</h3>
+      <form class="your-blog-form" action="" method="">
+        <div class="inputs">
+          <input type="text" id="title-input" name="" value="" placeholder="Blog Title" readonly>
+          <span class="buttons">
+            <button type="button" id="title-edit-btn" class="profileEdit-btn blog-btn" name="button">Edit</button>
+            <button type="button" id="title-cancel-btn" class="profileEdit-btn cancel-btn" hidden="true">Cancel
+            <button type="button" id="title-save-btn" class="profileEdit-btn save-btn" hidden="true">Save</button>
+          </span>
+          <hr>
+          <p>Blog URL</p>
+          <!-- <button type="button" class="profileEdit-btn blog-btn" name="button">Edit</button> -->
+          <hr>
+          <label for="thumbnailImg">Default Thumbnail Image</label>
+          <input type="file" id="thumbnail-input" name="thumbnailImg" value="" style="display: none">
+          <button type="button" id="thumbnail-edit-btn" class="profileEdit-btn blog-btn">Edit</button>
+          <div class="img-preview-btns-div">
+            <button type="button" id="thumbnail-save-btn" class="profileEdit-btn left-btn" hidden="true">Save</button>
+            <button type="button" id="thumbnail-cancel-btn" class="profileEdit-btn left-btn" hidden="true">Cancel</button>
+          </div>
+          <img src="/images/party_cat.jpg" alt="" id="thumbnail-preview">
+          <hr>
+          <label for="bannerImg">Banner Image</label>
+          <input type="file" id="banner-input" name="bannerImg" value="" style="display: none">
+          <button type="button" id="banner-edit-btn" class="profileEdit-btn blog-btn">Edit</button>
+          <div class="img-preview-btns-div">
+            <button type="button" id="banner-save-btn" class="profileEdit-btn left-btn" hidden="true">Save</button>
+            <button type="button" id="banner-cancel-btn" class="profileEdit-btn left-btn" hidden="true">Cancel</button>
+          </div>
+          <img src="/images/party_cat.jpg" alt="" id="banner-preview">
+          <hr>
+          <label for="featuredPost">Featured Post</label>
+          <select id="featuredPost-select" name="featuredPost" disabled>
+            <option value="">Post 1</option>
+            <option value="">Post 2</option>
+            <option value="">Post 3</option>
+          </select>
+          <span class="buttons">
+            <button type="button" id="featuredPost-edit-btn" class="profileEdit-btn blog-btn">Edit</button>
+            <button type="button" id="featuredPost-cancel-btn" class="profileEdit-btn blog-btn" hidden="true">Cancel</button>
+            <button type="button" id="featuredPost-save-btn" class="profileEdit-btn blog-btn" hidden="true">Save</button>
+          </span>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="one-card-col-wrapper">
+    <div class="profileDiv posts-card one-card-col">
+      <h3>Blog Posts</h3>
+      <div class="inputs">
+        <!-- <ul> -->
+          <hr>
+          <!-- <li> -->
+            <span>A slightly longer title</span>
+            <span><button type="button" class="profileEdit-btn" name="button">Edit</button></span>
+          <!-- </li> -->
+          <hr>
+          <!-- <li> -->
+            <span>Short title </span>
+            <span><button type="button" class="profileEdit-btn" name="button">Edit</button></span>
+          <!-- </li> -->
+          <hr>
+          <!-- <li> -->
+            <span>Another title of random length</span>
+            <span><button type="button" class="profileEdit-btn" name="button">Edit</button></span>
+          <!-- </li> -->
+        <!-- </ul> -->
+      </div>
+    </div>
+  </div>
+
+
+</div>
+<script src="/JS/userProfile.js"></script>
+
+<%- include("partials/footer") -%>

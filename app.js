@@ -168,7 +168,10 @@ app.get("/", function(req, res){
 });
 
 app.get("/contact", function(req, res){
-  res.render("contact", {contactContent: contactContent});
+  User.findOne({name: "user1"}, function(err, foundUser){
+    const posts = foundUser.posts
+    res.render("userProfile", {contactContent: contactContent, posts: posts, user: foundUser});
+  });
 });
 
 app.get("/about", function(req, res){
