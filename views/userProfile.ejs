@@ -114,16 +114,16 @@
                 <% } %>
               <% }) %>
             </select>
-            <% posts.forEach(function(post){ %>
-              <% if(post.featuredPost){ %>
-                <span class="hoverSpan"> <%=post.title %> </span>
-              <% } %>
-            <% }) %>
             <span class="buttons">
               <button type="button" id="featuredPost-edit-btn" class="profileEdit-btn blog-btn">Edit</button>
               <button type="button" id="featuredPost-cancel-btn" class="profileEdit-btn blog-btn" hidden="true">Cancel</button>
               <button type="button" id="featuredPost-save-btn" class="profileEdit-btn blog-btn" hidden="true">Save</button>
             </span>
+            <% posts.forEach(function(post){ %>
+              <% if(post.featuredPost){ %>
+                <span class="hoverSpan"> <%=post.title %> </span>
+              <% } %>
+            <% }) %>
           </div>
         </div>
       </form>
