@@ -122,6 +122,7 @@ const userSchema = new mongoose.Schema({
     required: [true, "User must have a password"]
   },
   blogTitle: String,
+  blogURL: String,
   posts: [postSchema],
   featuredPost: postSchema,
   defaultImg: String,

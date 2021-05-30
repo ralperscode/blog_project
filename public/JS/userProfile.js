@@ -111,6 +111,7 @@ function cancelImgEventListener(input, editBtn, cancelBtn, saveBtn, img){
 function editFeaturedEventListener(input, editBtn, cancelBtn, saveBtn){
   input.removeAttribute("disabled");
   input.focus();
+  input.style.width = "150px"
   editBtn.setAttribute("hidden", true);
   cancelBtn.removeAttribute("hidden");
   saveBtn.removeAttribute("hidden");
@@ -118,6 +119,7 @@ function editFeaturedEventListener(input, editBtn, cancelBtn, saveBtn){
 
 function cancelFeaturedEventListener(input, editBtn, cancelBtn, saveBtn){
   input.setAttribute("disabled", true);
+  input.style.width = "216px"
   cancelBtn.setAttribute("hidden", true);
   saveBtn.setAttribute("hidden", true);
   editBtn.removeAttribute("hidden");
@@ -169,3 +171,47 @@ bannerCancelBtn.addEventListener("click", cancelImgEventListener.bind(null, bann
 
 featuredPostEditBtn.addEventListener("click", editFeaturedEventListener.bind(null, featuredPost, featuredPostEditBtn, featuredPostCancelBtn, featuredPostSaveBtn), false);
 featuredPostCancelBtn.addEventListener("click", cancelFeaturedEventListener.bind(null, featuredPost, featuredPostEditBtn, featuredPostCancelBtn, featuredPostSaveBtn), false);
+//save todo
+
+// featured post hover event listeners
+
+// function fade(element) {
+//     var op = 1;  // initial opacity
+//     var timer = setInterval(function () {
+//         if (op <= 0.1){
+//             clearInterval(timer);
+//             element.style.display = 'none';
+//         }
+//         element.style.opacity = op;
+//         element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+//         op -= op * 0.1;
+//     }, 50);
+// }
+//
+// function unfade(element) {
+//     var op = 0.1;  // initial opacity
+//     element.style.display = 'block';
+//     var timer = setInterval(function () {
+//         if (op >= 1){
+//             clearInterval(timer);
+//         }
+//         element.style.opacity = op;
+//         element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+//         op += op * 0.1;
+//     }, 10);
+// }
+
+const featuredDiv = document.querySelector(".featuredPostDiv");
+const hoverSpan = document.querySelector(".hoverSpan");
+
+featuredDiv.addEventListener("mouseover", function(){
+  // unfade(hoverSpan);
+  if(hoverSpan.textContent.length > 24){
+    hoverSpan.style.display = "block"
+  }
+});
+
+featuredDiv.addEventListener("mouseout", function(){
+  // fade(hoverSpan);
+  hoverSpan.style.display = "none"
+});
