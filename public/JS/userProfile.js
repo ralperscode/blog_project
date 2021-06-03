@@ -175,6 +175,7 @@ featuredPostCancelBtn.addEventListener("click", cancelFeaturedEventListener.bind
 
 // featured post hover event listeners
 
+// functions sourced from https://stackoverflow.com/questions/6121203/how-to-do-fade-in-and-fade-out-with-javascript-and-css
 function fade(element) {
     var op = 1;  // initial opacity
     var timer = setInterval(function () {
@@ -215,3 +216,41 @@ featuredDiv.addEventListener("mouseleave", function(){
   fade(hoverSpan);
   // hoverSpan.style.display = "none"
 });
+
+
+// AJAX Functions
+const nameForm = document.getElementById('name-form');
+const emailForm = document.getElementById('email-form');
+
+function updateUserSetting(input, setting){
+  return function (event) {
+    // override default browser button behavior
+    event.preventDefault();
+    // grab new setting and its new value
+    var settingChange = input.value;
+    var params = setting + "=" + settingChange;
+    console.log(params);
+    // instantiate new xml http request
+    var xhr = new XMLHttpRequest();
+    // open request with post method and appropriate route on server
+    xhr.open("POST", "/contact/update/" + setting, true);
+    // set content type of request
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    xhr.send(params);
+
+    xhr.onload = function(){
+          console.log("In onload");
+          console.log(xhr.responseText);
+    }
+    // add onerror
+    xhr.onerror = function() {
+    alert("Request failed: Something went wrong! Please try again.");
+    console.log("Request error");
+    };
+  }
+
+}
+
+nameForm.addEventListener("submit", updateUserSetting(name, "name"));
+emailForm.addEventListener("submit", updateUserSetting(email, "email"));

@@ -334,7 +334,14 @@ app.get("/images/:imgId", function(req, res){
   });
 });
 
-
+app.post("/contact/update/:userSetting", function(req, res){
+  const settingToChange = req.params.userSetting;
+  User.findOne({name: "user1"}, function(err, foundUser){
+    foundUser[settingToChange] = req.body[settingToChange];
+    foundUser.save();
+    res.end();
+  });
+});
 
 app.listen(3000, function() {
   console.log("Server started on port 3000");
