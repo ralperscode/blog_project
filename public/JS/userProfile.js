@@ -87,7 +87,11 @@ function cancelBtnEventListener(input, editBtn, cancelBtn, saveBtn){
 }
 
 function saveBtnEventListener(input, editBtn, cancelBtn, saveBtn){
-  //todo
+  input.setAttribute("readonly", true);
+  cancelBtn.setAttribute("hidden", true);
+  saveBtn.setAttribute("hidden", true);
+  editBtn.removeAttribute("hidden");
+  input.style.width = "216.8px"
 }
 
 function editImgEventListener(input, editBtn, cancelBtn, saveBtn, img){
