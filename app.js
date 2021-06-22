@@ -334,10 +334,18 @@ app.get("/images/:imgId", function(req, res){
   });
 });
 
+// route for updating user settings triggered by ajax call
 app.post("/contact/update/:userSetting", function(req, res){
+  // grab the setting to update from the request parameter that was built during ajax call
   const settingToChange = req.params.userSetting;
+  // get the appropriate user
   User.findOne({name: "user1"}, function(err, foundUser){
-    foundUser[settingToChange] = req.body[settingToChange];
+    // social links are stored in an object so check for those, otherwise update
+    if (settingToChange === "facebookLink" || settingToChange === "twitterLink" || settingToChange === "instaLink" || settingToChange === "githubLink"){
+      foundUser.socialMediaLinks[settingToChange] = req.body[settingToChange] // req.body contains the new setting value
+    } else{
+      foundUser[settingToChange] = req.body[settingToChange];
+    }
     foundUser.save();
     res.end();
   });
@@ -354,3 +362,4 @@ app.listen(3000, function() {
 //2. make the blog posting more dynamic. Currently can only make a single paragraph.
    // allow for multiple paragraphs. Text styling. Images. Etc.
 // fill out actual info on about / contact pages.
+//3. MUST DO -- handle password encryption

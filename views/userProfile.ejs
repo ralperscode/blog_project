@@ -28,46 +28,56 @@
             </span>
           </form>
           <hr>
-          <label class="smallLabel" for="password-input">Password</label>
-          <input type="password" id="password-input" name="" value= "<%= user.password %>" placeholder="Change Password" readonly>
-          <span class="buttons">
-            <button type="button" id="password-edit-btn" class="profileEdit-btn about-btn">Edit</button>
-            <button type="button" id="password-cancel-btn" class="profileEdit-btn cancel-btn" hidden="true">Cancel</button>
-            <button type="button" id="password-save-btn" class="profileEdit-btn save-btn" hidden="true">Save</button>
-          </span>
+          <form id="password-form" name="password" action="/contact/update/password" method="post">
+            <label class="smallLabel" for="password-input">Password</label>
+            <input type="password" id="password-input" name="" value= "<%= user.password %>" placeholder="Change Password" readonly>
+            <span class="buttons">
+              <button type="button" id="password-edit-btn" class="profileEdit-btn about-btn">Edit</button>
+              <button type="button" id="password-cancel-btn" class="profileEdit-btn cancel-btn" hidden="true">Cancel</button>
+              <button type="submit" id="password-save-btn" class="profileEdit-btn save-btn" hidden="true">Save</button>
+            </span>
+          </form>
           <hr>
           <h3 class="settings-header">Social Media Links</h3>
-          <label class="smallLabel" for="fb-input">Facebook</label>
-          <input type="text" id="fb-input" name="" value= "<%= user.socialMediaLinks.facebookLink %>" placeholder="Facebook" readonly>
-          <span class="buttons">
-            <button type="button" id="fb-edit-btn" class="profileEdit-btn about-btn">Edit</button>
-            <button type="button" id="fb-cancel-btn" class="profileEdit-btn cancel-btn" hidden="true">Cancel</button>
-            <button type="button" id="fb-save-btn" class="profileEdit-btn save-btn" hidden="true">Save</button>
-          </span>
+          <form id="facebook-form" name="facebook" action="/contact/update/facebookLink" method="post">
+            <label class="smallLabel" for="fb-input">Facebook</label>
+            <input type="text" id="fb-input" name="" value= "<%= user.socialMediaLinks.facebookLink %>" placeholder="Facebook" readonly>
+            <span class="buttons">
+              <button type="button" id="fb-edit-btn" class="profileEdit-btn about-btn">Edit</button>
+              <button type="button" id="fb-cancel-btn" class="profileEdit-btn cancel-btn" hidden="true">Cancel</button>
+              <button type="submit" id="fb-save-btn" class="profileEdit-btn save-btn" hidden="true">Save</button>
+            </span>
+          </form>
           <hr>
-          <label class="smallLabel" for="twitter-input">Twitter</label>
-          <input type="text" id="twitter-input" name="" value="<%= user.socialMediaLinks.twitterLink %>" placeholder="Twitter" readonly>
-          <span class="buttons">
-            <button type="button" id="twitter-edit-btn" class="profileEdit-btn about-btn">Edit</button>
-            <button type="button" id="twitter-cancel-btn" class="profileEdit-btn cancel-btn" hidden="true">Cancel</button>
-            <button type="button" id="twitter-save-btn" class="profileEdit-btn save-btn" hidden="true">Save</button>
-          </span>
+          <form id="twitter-form" name="twitter" action="/contact/update/twitterLink" method="post">
+            <label class="smallLabel" for="twitter-input">Twitter</label>
+            <input type="text" id="twitter-input" name="" value="<%= user.socialMediaLinks.twitterLink %>" placeholder="Twitter" readonly>
+            <span class="buttons">
+              <button type="button" id="twitter-edit-btn" class="profileEdit-btn about-btn">Edit</button>
+              <button type="button" id="twitter-cancel-btn" class="profileEdit-btn cancel-btn" hidden="true">Cancel</button>
+              <button type="submit" id="twitter-save-btn" class="profileEdit-btn save-btn" hidden="true">Save</button>
+            </span>
+          </form>
           <hr>
-          <label class="smallLabel" for="insta-input">Instagram</label>
-          <input type="text" id="insta-input" name="" value="<%= user.socialMediaLinks.instaLink %>" placeholder="Instagram" readonly>
-          <span class="buttons">
-            <button type="button" id="insta-edit-btn" class="profileEdit-btn about-btn">Edit</button>
-            <button type="button" id="insta-cancel-btn" class="profileEdit-btn cancel-btn" hidden="true">Cancel</button>
-            <button type="button" id="insta-save-btn" class="profileEdit-btn save-btn" hidden="true">Save</button>
-          </span>
+          <form id="insta-form" name="insta" action="/contact/update/instaLink" method="post">
+            <label class="smallLabel" for="insta-input">Instagram</label>
+            <input type="text" id="insta-input" name="" value="<%= user.socialMediaLinks.instaLink %>" placeholder="Instagram" readonly>
+            <span class="buttons">
+              <button type="button" id="insta-edit-btn" class="profileEdit-btn about-btn">Edit</button>
+              <button type="button" id="insta-cancel-btn" class="profileEdit-btn cancel-btn" hidden="true">Cancel</button>
+              <button type="submit" id="insta-save-btn" class="profileEdit-btn save-btn" hidden="true">Save</button>
+            </span>
+          </form>
           <hr>
-          <label class="smallLabel" for="github-input">Github</label>
-          <input type="text" id="github-input" name="" value="<%= user.socialMediaLinks.githubLink %>" placeholder="Github" readonly>
-          <span class="buttons">
-            <button type="button" id="github-edit-btn" class="profileEdit-btn about-btn">Edit</button>
-            <button type="button" id="github-cancel-btn" class="profileEdit-btn cancel-btn" hidden="true">Cancel</button>
-            <button type="button" id="github-save-btn" class="profileEdit-btn save-btn" hidden="true">Save</button>
-          </span>
+          <form id="github-form" name="github" action="/contact/update/instaLink" method="post">
+            <label class="smallLabel" for="github-input">Github</label>
+            <input type="text" id="github-input" name="" value="<%= user.socialMediaLinks.githubLink %>" placeholder="Github" readonly>
+            <span class="buttons">
+              <button type="button" id="github-edit-btn" class="profileEdit-btn about-btn">Edit</button>
+              <button type="button" id="github-cancel-btn" class="profileEdit-btn cancel-btn" hidden="true">Cancel</button>
+              <button type="submit" id="github-save-btn" class="profileEdit-btn save-btn" hidden="true">Save</button>
+            </span>
+          </form>
         </div>
       <!-- </form> -->
     </div>

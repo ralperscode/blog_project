@@ -219,8 +219,15 @@ featuredDiv.addEventListener("mouseleave", function(){
 
 
 // AJAX Functions
+
+// grab all forms
 const nameForm = document.getElementById('name-form');
 const emailForm = document.getElementById('email-form');
+const passwordForm = document.getElementById('password-form');
+const fbForm = document.getElementById('facebook-form');
+const twitterForm = document.getElementById('twitter-form');
+const instaForm = document.getElementById('insta-form');
+const githubForm = document.getElementById('github-form');
 
 function updateUserSetting(input, setting){
   return function (event) {
@@ -252,5 +259,11 @@ function updateUserSetting(input, setting){
 
 }
 
+// add event listener to forms for when they are submitted
 nameForm.addEventListener("submit", updateUserSetting(name, "name"));
 emailForm.addEventListener("submit", updateUserSetting(email, "email"));
+passwordForm.addEventListener("submit", updateUserSetting(password, "password"));
+fbForm.addEventListener("submit", updateUserSetting(fb, "facebookLink"));
+twitterForm.addEventListener("submit", updateUserSetting(twitter, "twitterLink"));
+instaForm.addEventListener("submit", updateUserSetting(insta, "instaLink"));
+githubForm.addEventListener("submit", updateUserSetting(github, "githubLink"));
