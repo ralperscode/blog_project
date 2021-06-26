@@ -69,7 +69,7 @@
             </span>
           </form>
           <hr>
-          <form id="github-form" name="github" action="/contact/update/instaLink" method="post">
+          <form id="github-form" name="github" action="/contact/update/githubLink" method="post">
             <label class="smallLabel" for="github-input">Github</label>
             <input type="text" id="github-input" name="" value="<%= user.socialMediaLinks.githubLink %>" placeholder="Github" readonly>
             <span class="buttons">
@@ -84,63 +84,71 @@
 
     <div class="profileDiv blog-card two-card-col">
       <h2 class="settings-header">About Your Blog</h2>
-      <form class="your-blog-form" action="" method="">
+      <!-- <form class="your-blog-form" action="" method=""> -->
         <div class="inputs">
           <hr>
-          <label class="smallLabel" for="title-input">Blog Title</label>
-          <input type="text" id="title-input" name="" value="<%= user.blogTitle %>" placeholder="Blog Title" readonly>
-          <span class="buttons">
-            <button type="button" id="title-edit-btn" class="profileEdit-btn blog-btn" name="button">Edit</button>
-            <button type="button" id="title-cancel-btn" class="profileEdit-btn cancel-btn" hidden="true">Cancel</button>
-            <button type="button" id="title-save-btn" class="profileEdit-btn save-btn" hidden="true">Save</button>
-          </span>
+          <form id="title-form" name="title" action="/contact/update/blogTitle" method="post">
+            <label class="smallLabel" for="title-input">Blog Title</label>
+            <input type="text" id="title-input" name="" value="<%= user.blogTitle %>" placeholder="Blog Title" readonly>
+            <span class="buttons">
+              <button type="button" id="title-edit-btn" class="profileEdit-btn blog-btn" name="button">Edit</button>
+              <button type="button" id="title-cancel-btn" class="profileEdit-btn cancel-btn" hidden="true">Cancel</button>
+              <button type="submit" id="title-save-btn" class="profileEdit-btn save-btn" hidden="true">Save</button>
+            </span>
+          </form>
           <hr>
           <label class="smallLabel" for="blog-url">Blog URL</label>
           <p id="blog-url"><%= user.blogURL %> </p>
           <!-- <button type="button" class="profileEdit-btn blog-btn" name="button">Edit</button> -->
           <hr>
-          <label for="thumbnailImg">Default Thumbnail Image</label>
-          <input type="file" id="thumbnail-input" name="thumbnailImg" value="" style="display: none">
-          <button type="button" id="thumbnail-edit-btn" class="profileEdit-btn blog-btn">Edit</button>
-          <div class="img-preview-btns-div">
-            <button type="button" id="thumbnail-save-btn" class="profileEdit-btn left-btn" hidden="true">Save</button>
-            <button type="button" id="thumbnail-cancel-btn" class="profileEdit-btn left-btn" hidden="true">Cancel</button>
-          </div>
-          <img src="images/<%= user.defaultImg %>" alt="thumbnail preview" id="thumbnail-preview">
+          <form id="thumbnail-form" name="thumbnail" action="/contact/update/defaultImg" method="post" enctype="multipart/form-data">
+            <label for="thumbnailImg">Default Thumbnail Image</label>
+            <input type="file" id="thumbnail-input" name="thumbnailImg" accept="image/*" value="" style="display: none">
+            <button type="button" id="thumbnail-edit-btn" class="profileEdit-btn blog-btn">Edit</button>
+            <div class="img-preview-btns-div">
+              <button type="submit" id="thumbnail-save-btn" class="profileEdit-btn left-btn" hidden="true">Save</button>
+              <button type="button" id="thumbnail-cancel-btn" class="profileEdit-btn left-btn" hidden="true">Cancel</button>
+            </div>
+            <img src="images/<%= user.defaultImg %>" alt="thumbnail preview" id="thumbnail-preview">
+          </form>
           <hr>
-          <label for="bannerImg">Banner Image</label>
-          <input type="file" id="banner-input" name="bannerImg" value="" style="display: none">
-          <button type="button" id="banner-edit-btn" class="profileEdit-btn blog-btn">Edit</button>
-          <div class="img-preview-btns-div">
-            <button type="button" id="banner-save-btn" class="profileEdit-btn left-btn" hidden="true">Save</button>
-            <button type="button" id="banner-cancel-btn" class="profileEdit-btn left-btn" hidden="true">Cancel</button>
-          </div>
-          <img src="images/<%= user.bannerImg %>" alt="banner preview" id="banner-preview">
+          <form id="banner-form" name="banner" action="/contact/update/bannerImg" method="post" enctype="multipart/form-data">
+            <label for="bannerImg">Banner Image</label>
+            <input type="file" id="banner-input" name="bannerImg" accept="image/*" value="" style="display: none">
+            <button type="button" id="banner-edit-btn" class="profileEdit-btn blog-btn">Edit</button>
+            <div class="img-preview-btns-div">
+              <button type="submit" id="banner-save-btn" class="profileEdit-btn left-btn" hidden="true">Save</button>
+              <button type="button" id="banner-cancel-btn" class="profileEdit-btn left-btn" hidden="true">Cancel</button>
+            </div>
+            <img src="images/<%= user.bannerImg %>" alt="banner preview" id="banner-preview">
+          </form>
           <hr>
-          <div class="featuredPostDiv">
-            <label for="featuredPost">Featured Post</label>
-            <select id="featuredPost-select" name="featuredPost" disabled>
+          <form id="featured-form" name="featured" action="/contact/update/featuredPost" method="post">
+            <div class="featuredPostDiv">
+              <label for="featuredPost">Featured Post</label>
+              <select id="featuredPost-select" name="featuredPost" disabled>
+                <% posts.forEach(function(post){ %>
+                  <% if(post.featuredPost){ %>
+                    <option selected > <%=post.title %> </option>
+                  <% } else{ %>
+                    <option> <%=post.title %> </option>
+                  <% } %>
+                <% }) %>
+              </select>
+              <span class="buttons">
+                <button type="button" id="featuredPost-edit-btn" class="profileEdit-btn blog-btn">Edit</button>
+                <button type="button" id="featuredPost-cancel-btn" class="profileEdit-btn blog-btn" hidden="true">Cancel</button>
+                <button type="submit" id="featuredPost-save-btn" class="profileEdit-btn blog-btn" hidden="true">Save</button>
+              </span>
               <% posts.forEach(function(post){ %>
                 <% if(post.featuredPost){ %>
-                  <option selected > <%=post.title %> </option>
-                <% } else{ %>
-                  <option> <%=post.title %> </option>
+                  <span class="hoverSpan"> <%=post.title %> </span>
                 <% } %>
               <% }) %>
-            </select>
-            <span class="buttons">
-              <button type="button" id="featuredPost-edit-btn" class="profileEdit-btn blog-btn">Edit</button>
-              <button type="button" id="featuredPost-cancel-btn" class="profileEdit-btn blog-btn" hidden="true">Cancel</button>
-              <button type="button" id="featuredPost-save-btn" class="profileEdit-btn blog-btn" hidden="true">Save</button>
-            </span>
-            <% posts.forEach(function(post){ %>
-              <% if(post.featuredPost){ %>
-                <span class="hoverSpan"> <%=post.title %> </span>
-              <% } %>
-            <% }) %>
-          </div>
+            </div>
+          </form>
         </div>
-      </form>
+      <!-- </form> -->
     </div>
   </div>
   <div class="one-card-col-wrapper">

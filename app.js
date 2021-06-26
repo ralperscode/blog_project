@@ -341,10 +341,57 @@ app.post("/contact/update/:userSetting", function(req, res){
   // get the appropriate user
   User.findOne({name: "user1"}, function(err, foundUser){
     // social links are stored in an object so check for those, otherwise update
-    if (settingToChange === "facebookLink" || settingToChange === "twitterLink" || settingToChange === "instaLink" || settingToChange === "githubLink"){
+    if (settingToChange === "defaultImg"){
+      upload.single("thumbnailImg")(req, res, function (err) {
+        console.log("uploading...");
+        if (err instanceof multer.MulterError) {
+          // A Multer error occurred when uploading.
+          console.log("Multer error: "+ err);
+        } else if (err) {
+          console.log("Unknown error: " + err);
+        }
+        if (!req.file){
+          console.log("No file!");
+        } else{
+          console.log("file uploaded");
+          foundUser.defaultImg = req.file.id;
+          foundUser.save();
+        }
+    });
+  } else if (settingToChange === "bannerImg"){
+    upload.single("bannerImg")(req, res, function (err) {
+      console.log("uploading...");
+      if (err instanceof multer.MulterError) {
+        // A Multer error occurred when uploading.
+        console.log("Multer error: "+ err);
+      } else if (err) {
+        console.log("Unknown error: " + err);
+      }
+      if (!req.file){
+        console.log("No file!");
+      } else{
+        console.log("file uploaded");
+        foundUser.bannerImg = req.file.id;
+        foundUser.save();
+      }
+    });
+  } else if(settingToChange == "featuredPost"){
+    const posts = foundUser.posts;
+    const newFeatured = req.body[settingToChange];
+    posts.forEach(function(post){
+      if (post.title === newFeatured){
+        post.featuredPost = true;
+      } else{
+        post.featuredPost = false;
+      }
+    });
+  } else if (settingToChange === "facebookLink" || settingToChange === "twitterLink" || settingToChange === "instaLink" || settingToChange === "githubLink"){
       foundUser.socialMediaLinks[settingToChange] = req.body[settingToChange] // req.body contains the new setting value
     } else{
       foundUser[settingToChange] = req.body[settingToChange];
+    }
+    if (settingToChange === "name"){
+      foundUser.blogURL = "localhost:3000/" + req.body[settingToChange]
     }
     foundUser.save();
     res.end();
@@ -356,8 +403,10 @@ app.listen(3000, function() {
 });
 
 
-//expansion ideas
+// POTENTIAL BUGS
+//1. updating username and blogURL not working perfectly. Re-check after authentication / login is implemented
 
+//expansion ideas
 //1. make authentication and login abilities for multiple users
 //2. make the blog posting more dynamic. Currently can only make a single paragraph.
    // allow for multiple paragraphs. Text styling. Images. Etc.

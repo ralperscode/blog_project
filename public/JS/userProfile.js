@@ -112,6 +112,19 @@ function cancelImgEventListener(input, editBtn, cancelBtn, saveBtn, img){
   img.style.display = "block"
 }
 
+function saveImgEventListener(input, editBtn, cancelBtn, saveBtn, img){
+  if (input.files[0] == null){
+    alert("Please upload an image before saving.");
+  }else{
+    input.style.display = "none"
+    cancelBtn.parentElement.style.display = "none"
+    cancelBtn.setAttribute("hidden", true);
+    saveBtn.setAttribute("hidden", true);
+    editBtn.removeAttribute("hidden");
+    img.style.display = "block"
+  }
+}
+
 function editFeaturedEventListener(input, editBtn, cancelBtn, saveBtn){
   input.removeAttribute("disabled");
   input.focus();
@@ -122,6 +135,14 @@ function editFeaturedEventListener(input, editBtn, cancelBtn, saveBtn){
 }
 
 function cancelFeaturedEventListener(input, editBtn, cancelBtn, saveBtn){
+  input.setAttribute("disabled", true);
+  input.style.width = "216px"
+  cancelBtn.setAttribute("hidden", true);
+  saveBtn.setAttribute("hidden", true);
+  editBtn.removeAttribute("hidden");
+}
+
+function saveFeaturedEventListener(input, editBtn, cancelBtn, saveBtn){
   input.setAttribute("disabled", true);
   input.style.width = "216px"
   cancelBtn.setAttribute("hidden", true);
@@ -167,15 +188,15 @@ titleSaveBtn.addEventListener("click", saveBtnEventListener.bind(null, title, ti
 
 thumbnailEditBtn.addEventListener("click", editImgEventListener.bind(null, thumbnail, thumbnailEditBtn, thumbnailCancelBtn, thumbnailSaveBtn, thumbnailPreview), false);
 thumbnailCancelBtn.addEventListener("click", cancelImgEventListener.bind(null, thumbnail, thumbnailEditBtn, thumbnailCancelBtn, thumbnailSaveBtn, thumbnailPreview), false);
-//save todo
+thumbnailSaveBtn.addEventListener("click", saveImgEventListener.bind(null, thumbnail, thumbnailEditBtn, thumbnailCancelBtn, thumbnailSaveBtn, thumbnailPreview), false);
 
 bannerEditBtn.addEventListener("click", editImgEventListener.bind(null, banner, bannerEditBtn, bannerCancelBtn, bannerSaveBtn, bannerPreview), false);
 bannerCancelBtn.addEventListener("click", cancelImgEventListener.bind(null, banner, bannerEditBtn, bannerCancelBtn, bannerSaveBtn, bannerPreview), false);
-//save todo
+bannerSaveBtn.addEventListener("click", saveImgEventListener.bind(null, banner, bannerEditBtn, bannerCancelBtn, bannerSaveBtn, bannerPreview), false);
 
 featuredPostEditBtn.addEventListener("click", editFeaturedEventListener.bind(null, featuredPost, featuredPostEditBtn, featuredPostCancelBtn, featuredPostSaveBtn), false);
 featuredPostCancelBtn.addEventListener("click", cancelFeaturedEventListener.bind(null, featuredPost, featuredPostEditBtn, featuredPostCancelBtn, featuredPostSaveBtn), false);
-//save todo
+featuredPostSaveBtn.addEventListener("click", saveFeaturedEventListener.bind(null, featuredPost, featuredPostEditBtn, featuredPostCancelBtn, featuredPostSaveBtn), false);
 
 // featured post hover event listeners
 
@@ -232,6 +253,10 @@ const fbForm = document.getElementById('facebook-form');
 const twitterForm = document.getElementById('twitter-form');
 const instaForm = document.getElementById('insta-form');
 const githubForm = document.getElementById('github-form');
+const titleForm = document.getElementById('title-form');
+const thumbnailForm = document.getElementById('thumbnail-form');
+const bannerForm = document.getElementById('banner-form');
+const featuredForm = document.getElementById('featured-form');
 
 function updateUserSetting(input, setting){
   return function (event) {
@@ -248,19 +273,61 @@ function updateUserSetting(input, setting){
     // set content type of request
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-    xhr.send(params);
-
     xhr.onload = function(){
           console.log("In onload");
-          console.log(xhr.responseText);
+          if (this.status == 200){
+              console.log(xhr.responseText); //never logging -> response doesn't exist???
+          }
     }
     // add onerror
     xhr.onerror = function() {
     alert("Request failed: Something went wrong! Please try again.");
     console.log("Request error");
     };
+
+    xhr.send(params);
   }
 
+}
+
+function updateUserImg(input, setting, img){
+  return function (event) {
+    // override default browser button behavior
+    event.preventDefault();
+    // check if an image was uploaded
+    if (input.files[0]!= null){
+      // read file with FileReader in order to update thumbnail preview to the newly uploaded image
+      var file = input.files[0];
+        var reader  = new FileReader();
+        reader.onload = function(e)  {
+          img.src = e.target.result
+         }
+         reader.readAsDataURL(file);
+      // append image to new FormData object
+      var form_data = new FormData();
+      console.log("Name: " +input.name);
+      form_data.append(input.name, file);
+      // instantiate new xml http request
+      var xhr = new XMLHttpRequest();
+      // open request with post method and appropriate route on server
+      xhr.open("POST", "/contact/update/" + setting, true);
+      // set content type of request
+
+      xhr.onload = function(){
+            console.log("In onload");
+            if(this.status == 200){
+                console.log(xhr.response); //not logging -> response doesn't exist???
+            }
+      }
+      // add onerror
+      xhr.onerror = function() {
+      alert("Request failed: Something went wrong! Please try again.");
+      console.log("Request error");
+      };
+
+      xhr.send(form_data);
+    }
+  }
 }
 
 // add event listener to forms for when they are submitted
@@ -271,3 +338,7 @@ fbForm.addEventListener("submit", updateUserSetting(fb, "facebookLink"));
 twitterForm.addEventListener("submit", updateUserSetting(twitter, "twitterLink"));
 instaForm.addEventListener("submit", updateUserSetting(insta, "instaLink"));
 githubForm.addEventListener("submit", updateUserSetting(github, "githubLink"));
+titleForm.addEventListener("submit", updateUserSetting(title, "blogTitle"));
+thumbnailForm.addEventListener("submit", updateUserImg(thumbnail, "defaultImg", thumbnailPreview));
+bannerForm.addEventListener("submit", updateUserImg(banner, "bannerImg", bannerPreview));
+featuredForm.addEventListener("submit", updateUserSetting(featuredPost, "featuredPost"));
