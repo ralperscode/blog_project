@@ -269,7 +269,7 @@ function updateUserSetting(input, setting){
     // instantiate new xml http request
     var xhr = new XMLHttpRequest();
     // open request with post method and appropriate route on server
-    xhr.open("POST", "/contact/update/" + setting, true);
+    xhr.open("POST", "/profile/update/" + setting, true);
     // set content type of request
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
@@ -310,7 +310,7 @@ function updateUserImg(input, setting, img){
       // instantiate new xml http request
       var xhr = new XMLHttpRequest();
       // open request with post method and appropriate route on server
-      xhr.open("POST", "/contact/update/" + setting, true);
+      xhr.open("POST", "/profile/update/" + setting, true);
       // set content type of request
 
       xhr.onload = function(){

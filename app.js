@@ -157,7 +157,7 @@ let posts = [];
 app.get("/", function(req, res){
   User.findOne({name: "user1"}, function(err, foundUser){
     let posts = foundUser.posts
-    res.render("home", {homeStartingContent: homeStartingContent, posts: posts});
+    res.render("home", {homeStartingContent: homeStartingContent, posts: posts, user: foundUser});
     // // Additional check for file type content -> not used currently.
     // // I think the checks before uploading are sufficient for determining file type
     // get all thumbnail image files
@@ -181,10 +181,10 @@ app.get("/", function(req, res){
   });
 });
 
-app.get("/contact", function(req, res){
+app.get("/profile", function(req, res){
   User.findOne({name: "user1"}, function(err, foundUser){
     const posts = foundUser.posts
-    res.render("userProfile", {contactContent: contactContent, posts: posts, user: foundUser});
+    res.render("userProfile", {posts: posts, user: foundUser});
   });
 });
 
@@ -335,7 +335,7 @@ app.get("/images/:imgId", function(req, res){
 });
 
 // route for updating user settings triggered by ajax call
-app.post("/contact/update/:userSetting", function(req, res){
+app.post("/profile/update/:userSetting", function(req, res){
   // grab the setting to update from the request parameter that was built during ajax call
   const settingToChange = req.params.userSetting;
   // get the appropriate user
