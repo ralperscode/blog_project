@@ -2,7 +2,7 @@
 
 // captions
 const form = document.querySelector("form");
-const composeHeader = document.querySelector(".compose-page-contents h1");
+const composeHeader = document.querySelector(".quillEditor-page-contents h1");
 document.querySelector('.ql-caption').addEventListener("click", function() {
   // blur rest of page when button is clicked
   form.classList.add("blur");

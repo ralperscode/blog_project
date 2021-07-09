@@ -217,13 +217,82 @@ app.post("/compose", function(req, res){
     //     res.redirect("/");
     });
   });
-
   // // make it async and use wait
   // User.findOne({name: "user1"}, async function(err, foundUser){
   //   foundUser.posts.push(newPost);
   //   await foundUser.save();
   //   res.redirect("/");
 //});
+
+// Route for editing posts accessed from user profile
+app.get("/edit/:postID", function(req, res){
+  User.findOne({name: "user1"}, function(err, foundUser){
+    let posts = foundUser.posts;
+    posts.forEach(function(post){
+      if (post._id == req.params.postID){
+        // convert buffer to string, decode the URI component, and grab the delta ops array
+        const utf8String = post.content.toString('utf8');
+        const decoded = JSON.parse(decodeURIComponent(utf8String));
+        const ops = decoded.ops;
+        res.render("editPost", {user: foundUser, post: post, delta: utf8String});
+      }
+    });
+  });
+});
+
+// post route for updating post content
+app.post("/edit/:postID", function(req, res){
+  console.log("edits submitted to post route");
+  const binaryBody = new Buffer.from(req.body.postBody, "utf-8");
+  const textBody = req.body.postBodyText;
+  User.findOne({name: "user1"}, function(err, foundUser){
+    foundUser.posts.forEach(function(post){
+      if (post.id == req.params.postID){
+        post.content = binaryBody;
+        post.textContent = textBody;
+        foundUser.save().then(res.redirect("/posts/" + post.id));
+      }
+    });
+  });
+});
+
+// post route for changing a post's thumbnail image
+app.post("/edit/:postID/thumbnail", function(req, res){
+  User.findOne({name: "user1"}, function(err, foundUser){
+    const postID = req.params.postID;
+    // use multer to upload the image
+    upload.single("thumbnailImage")(req, res, function (err) {
+      console.log("uploading...");
+      if (err instanceof multer.MulterError) {
+        // A Multer error occurred when uploading.
+        console.log("Multer error: "+ err);
+      } else if (err) {
+        console.log("Unknown error: " + err);
+      }
+      // no file sent to server -> default img selected
+      if (!req.file){
+        console.log("No file!");
+        foundUser.posts.forEach(function(post){
+          if (post.id == postID){
+            console.log("updating post with default img");
+            post.thumbnail = foundUser.defaultImg;
+            foundUser.save().then(res.end());
+          }
+        });
+      } else{
+        // new image uploaded -> save this as thumbnail
+        console.log("file uploaded");
+        foundUser.posts.forEach(function(post){
+          if(post.id == postID){
+            console.log("updating post with new file");
+            post.thumbnail = req.file.id;
+            foundUser.save().then(res.end());
+          }
+        });
+      }
+    });
+  })
+});
 
 app.get("/posts/:postID", function(req, res){
 User.findOne({name: "user1"}, function(err, foundUser){

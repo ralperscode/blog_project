@@ -34,5 +34,3 @@ modules: {
 theme: 'snow',
 placeholder: "Write and format post here."
 });
-
-document.getElementById('editor').style.height = "350px"

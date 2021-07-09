@@ -1,10 +1,11 @@
 <%- include("partials/header") -%>
-<div class="container quillEditor-page-contents">
-  <h1>Compose</h1>
-  <form id="compose-form" action="/compose" method="post">
+
+<div class="container quillEditor-page-contents" id="editPageContents">
+  <h1>Edit Post</h1>
+  <form id="edit-form" action="/edit/<%=post.id%>" method="post">
     <div class="form-group">
       <label for="title">Title</label>
-      <input class="form-control" id="title" type="text" name="postTitle">
+      <input class="form-control" id="title" type="text" name="postTitle" value="<%=post.title%>">
       <label for="editor">Post</label>
       <!-- Create the editor container -->
       <div class="quill-div">
@@ -13,10 +14,12 @@
         </div>
       </div>
 
-      <input type="hidden" id="body" name="postBody" rows="3"></input>
+      <input type="hidden" id="body" name="postBody" rows="3" value=<%=delta%>></input>
       <input type="hidden" id="bodyText" name="postBodyText"></input>
     </div>
     <button class= "btn btn-primary" id="publishBtn" type="button" onClick="parseQuill()" name="composeButton">Publish</button>
+    <button type="button" class= "btn btn-warning" id="editThumbnailBtn">Change Thumbnail Image?</button>
+    <p id="thumbnailSuccess"></p>
   </form>
   <!-- div for caption creation -->
   <div class="container popupDiv" id="captionDiv" style="display: none">
@@ -25,6 +28,25 @@
     <button id="addCaption" class="bg-primary" type="button" name="button">Add</button>
     <button id="cancelCaption" class="bg-warning" type="button" name="button">Cancel</button>
   </div>
+</div>
+<div class="container fileUploadDiv editProfilePopup" id="thumbnailUploadDiv" style="display: none">
+  <form id="editThumbnailForm" action="/edit/<%=post.id%>/thumbnail" method="post" enctype="multipart/form-data">
+    <p>Select post thumbnail image.</p>
+    <!-- change value to be post _ID sent from compose submit -->
+    <input type="hidden" id="postID" name="postID" value= <%= post._id %> >
+    <input id="imgUpload" type="radio" name="thumbnailImageRadio">
+    <label id="imgUploadLabel" for="imgUpload">Upload New Image</label>
+    <input id="fileUploadInput" type="file" accept="image/*" onchange="validateFileType()" name="thumbnailImage" style="display: none">
+    <br>
+    <input id="defaultImg" type="radio" name="thumbnailImageRadio">
+    <label for="defaultImg">Use default image</label>
+    <br>
+    <!-- confirm button of type button used to validate form -->
+    <button class="bg-primary" id="thumbnailConfirmBtn" type="button">Confirm</button>
+    <button class="bg-warning" id="thumbnailCancelBtn" type="button">Cancel</button>
+    <!-- hidden submit button is clicked if confirm button form validation passes, submitting form -->
+    <button type="submit" hidden id="editThumbnailFormSubmitBtn"></button>
+  </form>
 </div>
 
 <!-- What follows is all of my JS files and code. Could be more clean and efficient with use of modules -->
@@ -46,5 +68,10 @@
 <script src="/JS/imageCaption.js"></script>
 <!-- give new quill toolbar buttons functionality -->
 <script src="/JS/buttonFunctionality.js"></script>
+
+<script src="/JS/thumbnailUpload.js"></script>
+<script src="/JS/editPost.js"></script>>
+
+</script>
 
 <%- include("partials/footer") -%>

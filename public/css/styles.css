@@ -133,12 +133,7 @@ margin-top: 1em;
   font-size: 12.75px;
 }
 
-/* compose page styling */
-.compose-page-contents{
-
-}
-
-.compose-page-contents h1, label{
+.quillEditor-page-contents h1, label{
   letter-spacing: 0.1em;
   padding-top: 10px;
 }
@@ -441,7 +436,10 @@ label img{
  padding-right: 15px;
 }
 
-
+/* edit post page styling */
+.editProfilePopup{
+  position: relative;
+}
 
 /* footer styling */
 
