@@ -436,6 +436,11 @@ label img{
  padding-right: 15px;
 }
 
+.post-title-anchor {
+  text-decoration: none;
+  color: black;
+}
+
 /* edit post page styling */
 .editProfilePopup{
   position: relative;
