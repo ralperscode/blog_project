@@ -11,7 +11,18 @@ const GridFsStorage = require('multer-gridfs-storage');
 // currently not used
 // const methodOverride = require("method-override"); //enable delete operation for files.
 
+// passport modules
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const FacebookStrategy = require("passport-facebook").Strategy;
+const findOrCreate = require("mongoose-findorcreate");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
+const flash = require("connect-flash");
+
 // native modules
+const session = require("express-session")
 const path = require("path"); //used for grabbing file extension names
 const crypto = require("crypto"); //used for generating random file names
 require('dotenv').config();
@@ -26,6 +37,28 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({limit: '50mb',extended: true}));
 app.use(express.static("public"));
+
+// flash setup
+app.use(flash());
+// flash middleware that stores messages in res.locals object, which is accessable by the view engine
+app.use(function(req, res, next){
+  res.locals.error_message = req.flash('error_message');
+  // never need to flash error or success messages but leaving this code here for reference
+  // res.locals.success_message = req.flash('success_message');
+  // res.locals.error = req.flash('error');
+  next();
+});
+
+// setup express-session
+app.use(session({
+  secret:process.env.LOCAL_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+
+// initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Multer setup and storage engine
 const mongoURI = process.env.MONGODB
@@ -131,6 +164,9 @@ const userSchema = new mongoose.Schema({
 
 });
 
+// add findOrCreate as plugin to userSchema for oAuth strategies
+userSchema.plugin(findOrCreate);
+
 const User = mongoose.model("User", userSchema);
 
 
@@ -150,6 +186,58 @@ User.findOne({}, function(err, foundUser){
     user1.save();
   }
 });
+
+// local authentication strategy and session serialization
+passport.use(new LocalStrategy({
+  usernameField: "name";
+  passReqToCallback: true //needed so req.flash can be used
+},
+  function(req, username, password, done){
+    User.findOne({username: username}, function(err, user){
+      if(err){
+        return done(err);
+      }
+      if(!user){
+        console.log("no user");
+        // done is a passport function that returns an authenticated user
+        // or false if a login mistake was made
+        // use req.flash to provide res.locals with the error message
+        return done(null, false, req.flash("error_message", "Username not found"));
+      }
+      // use bycrypt.compare() to check user entered password against hash in db
+      bcrypt.compare(password, user.password, function(err, result){
+        if(!result){
+        console.log("password failure");
+        return done(null, false, req.flash("error_message", "Invalid password"));
+        }
+        // if username and password matched, return the authenticated user in done()
+        console.log("returning user");
+        return done(null, user);
+      });
+    });
+  }
+));
+
+// serialize session with the authenticated user's id
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
+// ensureAuthentication middleware function for all secured routes
+
+function ensureAuthentication(req, res, next){
+  if (req.isAuthenticated()){
+    next();
+  } else{
+    res.redirect("/login");
+  }
+}
 
 //global variables
 let posts = [];
