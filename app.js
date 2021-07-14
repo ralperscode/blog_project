@@ -246,11 +246,12 @@ app.post("/edit/:postID", function(req, res){
   const binaryBody = new Buffer.from(req.body.postBody, "utf-8");
   const textBody = req.body.postBodyText;
   User.findOne({name: "user1"}, function(err, foundUser){
-    foundUser.posts.forEach(function(post){
+    foundUser.posts.forEach(async function(post){
       if (post.id == req.params.postID){
         post.content = binaryBody;
         post.textContent = textBody;
-        foundUser.save().then(res.redirect("/posts/" + post.id));
+        await foundUser.save()
+        res.redirect("/posts/" + post.id);
       }
     });
   });

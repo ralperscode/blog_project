@@ -16,36 +16,37 @@
 <div class="container">
 <!-- <h1>Home</h1> -->
 <!-- <p> <%= homeStartingContent %> </p> -->
-<% posts.forEach(function(post){ %>
+
+<% for(let i = posts.length - 1; i >= 0; i--){ %>
   <article class="recent">
     <!-- add a posted on date -->
     <div class="container article-content">
-      <a href="/posts/<%=post._id%>" class="article-thumbnail">
+      <a href="/posts/<%=posts[i]._id%>" class="article-thumbnail">
         <!-- post.thumbnail contains thumbnail document id. send this to download stream route as img source -->
-        <img src="images/<%= post.thumbnail %>" alt="post thumbnail">
+        <img src="images/<%= posts[i].thumbnail %>" alt="post thumbnail">
       </a>
       <div class="post-date">
         <!-- remove conditional after clearing db. needed now because not all posts have a date -->
-        <% if(!post.datePosted) { %>
+        <% if(!posts[i].datePosted) { %>
           <p>Posted On</p>
         <% } else { %>
-        <p>Posted On <%= post.datePosted.toLocaleDateString("en-US", {day: "numeric", month: "long", year: "numeric"}) %></p>
+        <p>Posted On <%= posts[i].datePosted.toLocaleDateString("en-US", {day: "numeric", month: "long", year: "numeric"}) %></p>
         <% } %>
       </div>
-      <h1> <%= post.title %> </h1>
+      <h1> <%= posts[i].title %> </h1>
       <div class="article-preview">
-        <% if(post.contentText){ %>
-          <p><%= post.contentText.slice(0, 200) + "..." %> </p>
+        <% if(posts[i].contentText){ %>
+          <p><%= posts[i].contentText.slice(0, 200) + "..." %> </p>
         <% }else{ %>
-          <%- post.decoded_HTML %>
+          <%- posts[i].decoded_HTML %>
         <% } %>
-        <a href="/posts/<%=post._id%>">Read More</a>
+        <a href="/posts/<%=posts[i]._id%>">Read More</a>
         <!-- see bottom of file for removed line -->
       </div>
     </div>
   </article>
     <hr class="article-hr">
-<% }); %>
+<% } %>
 
 <%- include("partials/footer") -%>
 
