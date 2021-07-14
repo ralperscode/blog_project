@@ -40,6 +40,14 @@ app.use(express.static("public"));
 
 // flash setup
 app.use(flash());
+
+// setup express-session
+app.use(session({
+  secret:process.env.LOCAL_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+
 // flash middleware that stores messages in res.locals object, which is accessable by the view engine
 app.use(function(req, res, next){
   res.locals.error_message = req.flash('error_message');
@@ -48,13 +56,6 @@ app.use(function(req, res, next){
   // res.locals.error = req.flash('error');
   next();
 });
-
-// setup express-session
-app.use(session({
-  secret:process.env.LOCAL_SECRET,
-  resave: false,
-  saveUninitialized: false
-}));
 
 // initialize passport
 app.use(passport.initialize());
@@ -189,7 +190,7 @@ User.findOne({}, function(err, foundUser){
 
 // local authentication strategy and session serialization
 passport.use(new LocalStrategy({
-  usernameField: "name";
+  usernameField: "name",
   passReqToCallback: true //needed so req.flash can be used
 },
   function(req, username, password, done){
@@ -243,9 +244,13 @@ function ensureAuthentication(req, res, next){
 let posts = [];
 
 app.get("/", function(req, res){
-  User.findOne({name: "user1"}, function(err, foundUser){
+  res.send("Hello World");
+});
+
+app.get("/:userBlog", function(req, res){
+  User.findOne({name: req.params.userBlog}, function(err, foundUser){
     let posts = foundUser.posts
-    res.render("home", {homeStartingContent: homeStartingContent, posts: posts, user: foundUser});
+    res.render("blog", {homeStartingContent: homeStartingContent, posts: posts, user: foundUser});
     // // Additional check for file type content -> not used currently.
     // // I think the checks before uploading are sufficient for determining file type
     // get all thumbnail image files
@@ -448,7 +453,7 @@ app.post("/compose/imgUpload", function (req, res) {
             // update post thumbnail content to point to default image
             // id of default is stored in user profile
             post.thumbnail = foundUser.defaultImg
-            foundUser.save().then(res.redirect("/"));
+            foundUser.save().then(res.redirect("/" + foundUser.name));
             // console.log("updated post: " + post);
             // note: default image will be saved in thumbnails.files as well
           }
@@ -461,7 +466,7 @@ app.post("/compose/imgUpload", function (req, res) {
           if (post._id == req.body.postID){
             // update post thumbnail content so it equals newly uploaded file
             post.thumbnail = req.file.id
-            foundUser.save().then(res.redirect("/"));
+            foundUser.save().then(res.redirect("/"+ foundUser.name));
             // console.log("updated post: " + post);
           }
         });
