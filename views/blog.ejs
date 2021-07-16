@@ -1,12 +1,12 @@
 <%- include("partials/header") -%>
 <article class="featured">
-  <div class="feature-div" style="background-image: url(images/<%= user.bannerImg %>)">
+  <div class="feature-div" style="background-image: url(../images/<%= user.bannerImg %>)">
     <!-- <img class="feature_img" src="/images/party_cat.jpg" alt="party cat"> -->
     <div class="container feature-div-headers">
       <% posts.forEach(function(post){ %>
         <% if(post.featuredPost == true){ %>
           <h3>Featured</h3>
-          <h1><a href="/posts/<%=post._id%>"><%= post.title %> </a></h1>
+          <h1><a href="<%=user.name%>/posts/<%=post._id%>"><%= post.title %> </a></h1>
       <%  } %>
       <% }) %>
     </div>
@@ -21,9 +21,9 @@
   <article class="recent">
     <!-- add a posted on date -->
     <div class="container article-content">
-      <a href="/posts/<%=posts[i]._id%>" class="article-thumbnail">
+      <a href="<%=user.name%>/posts/<%=posts[i]._id%>" class="article-thumbnail">
         <!-- post.thumbnail contains thumbnail document id. send this to download stream route as img source -->
-        <img src="images/<%= posts[i].thumbnail %>" alt="post thumbnail">
+        <img src="../images/<%= posts[i].thumbnail %>" alt="post thumbnail">
       </a>
       <div class="post-date">
         <!-- remove conditional after clearing db. needed now because not all posts have a date -->
@@ -40,7 +40,7 @@
         <% }else{ %>
           <%- posts[i].decoded_HTML %>
         <% } %>
-        <a href="/posts/<%=posts[i]._id%>">Read More</a>
+        <a href="<%=user.name%>/posts/<%=posts[i]._id%>">Read More</a>
         <!-- see bottom of file for removed line -->
       </div>
     </div>

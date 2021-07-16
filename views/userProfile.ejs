@@ -157,7 +157,7 @@
       <div class="inputs">
           <% posts.forEach(function(post){ %>
             <hr>
-            <span> <a class="post-title-anchor" href="posts/<%=post.id%>"><%=post.title %></a></span>
+            <span> <a class="post-title-anchor" href="blog/<%=user.name%>/posts/<%=post.id%>"><%=post.title %></a></span>
             <!-- change href after writing edit page -->
             <span><a href="edit/<%=post.id%>"><button type="button" class="profileEdit-btn" name="button">Edit</button></a></span>
           <% }) %>

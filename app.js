@@ -243,12 +243,12 @@ function ensureAuthentication(req, res, next){
 //global variables
 let posts = [];
 
-// app.get("/", function(req, res){
-//   res.send("Hello World");
-// })
-
 app.get("/", function(req, res){
-  User.findOne({name: "user1"}, function(err, foundUser){
+  res.send("Hello World");
+})
+
+app.get("/blog/:userName", function(req, res){
+  User.findOne({name: req.params.userName}, function(err, foundUser){
     let posts = foundUser.posts
     res.render("blog", {homeStartingContent: homeStartingContent, posts: posts, user: foundUser});
     // // Additional check for file type content -> not used currently.
@@ -344,7 +344,7 @@ app.post("/edit/:postID", function(req, res){
         post.content = binaryBody;
         post.textContent = textBody;
         await foundUser.save()
-        res.redirect("/posts/" + post.id);
+        res.redirect("/blog/"+ foundUser.name + "posts/" + post.id);
       }
     });
   });
@@ -388,8 +388,8 @@ app.post("/edit/:postID/thumbnail", function(req, res){
   })
 });
 
-app.get("/posts/:postID", function(req, res){
-User.findOne({name: "user1"}, function(err, foundUser){
+app.get("/blog/:userName/posts/:postID", function(req, res){
+User.findOne({name: req.params.userName}, function(err, foundUser){
   let posts = foundUser.posts;
   posts.forEach(function(post){
     // find the relevant post
@@ -453,7 +453,7 @@ app.post("/compose/imgUpload", function (req, res) {
             // update post thumbnail content to point to default image
             // id of default is stored in user profile
             post.thumbnail = foundUser.defaultImg
-            foundUser.save().then(res.redirect("/"));
+            foundUser.save().then(res.redirect("/blog/"+ foundUser.name));
             // console.log("updated post: " + post);
             // note: default image will be saved in thumbnails.files as well
           }
@@ -466,7 +466,7 @@ app.post("/compose/imgUpload", function (req, res) {
           if (post._id == req.body.postID){
             // update post thumbnail content so it equals newly uploaded file
             post.thumbnail = req.file.id
-            foundUser.save().then(res.redirect("/"));
+            foundUser.save().then(res.redirect("/blog/"+ foundUser.name));
             // console.log("updated post: " + post);
           }
         });
