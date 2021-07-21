@@ -274,8 +274,8 @@ app.get("/blog/:userName", function(req, res){
   });
 });
 
-app.get("/profile", function(req, res){
-  User.findOne({name: "user1"}, function(err, foundUser){
+app.get("/profile/:userName", function(req, res){
+  User.findOne({name: req.params.userName}, function(err, foundUser){
     const posts = foundUser.posts
     res.render("userProfile", {posts: posts, user: foundUser});
   });
@@ -318,8 +318,8 @@ app.post("/compose", function(req, res){
 //});
 
 // Route for editing posts accessed from user profile
-app.get("/edit/:postID", function(req, res){
-  User.findOne({name: "user1"}, function(err, foundUser){
+app.get("/profile/:userName/edit/:postID", function(req, res){
+  User.findOne({name: req.params.userName}, function(err, foundUser){
     let posts = foundUser.posts;
     posts.forEach(function(post){
       if (post._id == req.params.postID){
@@ -334,25 +334,25 @@ app.get("/edit/:postID", function(req, res){
 });
 
 // post route for updating post content
-app.post("/edit/:postID", function(req, res){
+app.post("/profile/:userName/edit/:postID", function(req, res){
   console.log("edits submitted to post route");
   const binaryBody = new Buffer.from(req.body.postBody, "utf-8");
   const textBody = req.body.postBodyText;
-  User.findOne({name: "user1"}, function(err, foundUser){
+  User.findOne({name: req.params.userName}, function(err, foundUser){
     foundUser.posts.forEach(async function(post){
       if (post.id == req.params.postID){
         post.content = binaryBody;
         post.textContent = textBody;
         await foundUser.save()
-        res.redirect("/blog/"+ foundUser.name + "posts/" + post.id);
+        res.redirect("/blog/"+ foundUser.name + "/posts/" + post.id);
       }
     });
   });
 });
 
 // post route for changing a post's thumbnail image
-app.post("/edit/:postID/thumbnail", function(req, res){
-  User.findOne({name: "user1"}, function(err, foundUser){
+app.post("/profile/:userName/edit/:postID/thumbnail", function(req, res){
+  User.findOne({name: req.params.userName}, function(err, foundUser){
     const postID = req.params.postID;
     // use multer to upload the image
     upload.single("thumbnailImage")(req, res, function (err) {
@@ -421,7 +421,7 @@ User.findOne({name: req.params.userName}, function(err, foundUser){
         const decodedHTML = converter.convert();
         // add this as a key to the post before sending it to render
         post.decoded_HTML = decodedHTML;
-        res.render("post", {post: post});
+        res.render("post", {user: foundUser, post: post});
       }
     }
   );
@@ -498,11 +498,11 @@ app.get("/images/:imgId", function(req, res){
 });
 
 // route for updating user settings triggered by ajax call
-app.post("/profile/update/:userSetting", function(req, res){
+app.post("/profile/:userName/update/:userSetting", function(req, res){
   // grab the setting to update from the request parameter that was built during ajax call
   const settingToChange = req.params.userSetting;
   // get the appropriate user
-  User.findOne({name: "user1"}, function(err, foundUser){
+  User.findOne({name: req.params.userName}, function(err, foundUser){
     // social links are stored in an object so check for those, otherwise update
     if (settingToChange === "defaultImg"){
       upload.single("thumbnailImg")(req, res, function (err) {
@@ -554,7 +554,7 @@ app.post("/profile/update/:userSetting", function(req, res){
       foundUser[settingToChange] = req.body[settingToChange];
     }
     if (settingToChange === "name"){
-      foundUser.blogURL = "localhost:3000/" + req.body[settingToChange]
+      foundUser.blogURL = "localhost:3000/blog/" + req.body[settingToChange]
     }
     foundUser.save();
     res.end();

@@ -2,13 +2,14 @@
 
 <div class="container">
   <h1>Profile Settings</h1>
+  <p id="current-user-name" style="display:none"><%=user.name%></p>
   <div class="two-card-col-wrapper">
     <div class="profileDiv about-card two-card-col">
       <h2 class="settings-header">About You</h2>
       <!-- <form class="about-you-form" action="" method=""> -->
         <div class="inputs">
           <hr>
-          <form id="name-form" name="name"  method="post" action="/profile/update/name">
+          <form id="name-form" name="name"  method="post" action="/profile/<%=user.name%>/update/name">
             <label class="smallLabel" for="name-input">Username</label>
             <input type="text" id="name-input" name="userName" value="<%= user.name %>" placeholder="Name" readonly>
             <span class="buttons">
@@ -18,7 +19,7 @@
             </span>
           </form>
           <hr>
-          <form id="email-form" name="email" action="/profile/update/email" method="post">
+          <form id="email-form" name="email" action="/profile/<%=user.name%>/update/email" method="post">
             <label class="smallLabel" for="email-input">Email</label>
             <input type="email" id="email-input" name="" value="<%= user.email %>" placeholder="Email" readonly>
             <span class="buttons">
@@ -28,7 +29,7 @@
             </span>
           </form>
           <hr>
-          <form id="password-form" name="password" action="/profile/update/password" method="post">
+          <form id="password-form" name="password" action="/profile/<%=user.name%>/update/password" method="post">
             <label class="smallLabel" for="password-input">Password</label>
             <input type="password" id="password-input" name="" value= "<%= user.password %>" placeholder="Change Password" readonly>
             <span class="buttons">
@@ -39,7 +40,7 @@
           </form>
           <hr>
           <h3 class="settings-header">Social Media Links</h3>
-          <form id="facebook-form" name="facebook" action="/profile/update/facebookLink" method="post">
+          <form id="facebook-form" name="facebook" action="/profile/<%=user.name%>/update/facebookLink" method="post">
             <label class="smallLabel" for="fb-input">Facebook</label>
             <input type="text" id="fb-input" name="" value= "<%= user.socialMediaLinks.facebookLink %>" placeholder="Facebook" readonly>
             <span class="buttons">
@@ -49,7 +50,7 @@
             </span>
           </form>
           <hr>
-          <form id="twitter-form" name="twitter" action="/profile/update/twitterLink" method="post">
+          <form id="twitter-form" name="twitter" action="/profile/<%=user.name%>/update/twitterLink" method="post">
             <label class="smallLabel" for="twitter-input">Twitter</label>
             <input type="text" id="twitter-input" name="" value="<%= user.socialMediaLinks.twitterLink %>" placeholder="Twitter" readonly>
             <span class="buttons">
@@ -59,7 +60,7 @@
             </span>
           </form>
           <hr>
-          <form id="insta-form" name="insta" action="/profile/update/instaLink" method="post">
+          <form id="insta-form" name="insta" action="/profile/<%=user.name%>/update/instaLink" method="post">
             <label class="smallLabel" for="insta-input">Instagram</label>
             <input type="text" id="insta-input" name="" value="<%= user.socialMediaLinks.instaLink %>" placeholder="Instagram" readonly>
             <span class="buttons">
@@ -69,7 +70,7 @@
             </span>
           </form>
           <hr>
-          <form id="github-form" name="github" action="/profile/update/githubLink" method="post">
+          <form id="github-form" name="github" action="/profile/<%=user.name%>/update/githubLink" method="post">
             <label class="smallLabel" for="github-input">Github</label>
             <input type="text" id="github-input" name="" value="<%= user.socialMediaLinks.githubLink %>" placeholder="Github" readonly>
             <span class="buttons">
@@ -87,7 +88,7 @@
       <!-- <form class="your-blog-form" action="" method=""> -->
         <div class="inputs">
           <hr>
-          <form id="title-form" name="title" action="/profile/update/blogTitle" method="post">
+          <form id="title-form" name="title" action="/profile/<%=user.name%>/update/blogTitle" method="post">
             <label class="smallLabel" for="title-input">Blog Title</label>
             <input type="text" id="title-input" name="" value="<%= user.blogTitle %>" placeholder="Blog Title" readonly>
             <span class="buttons">
@@ -101,7 +102,7 @@
           <p id="blog-url"><%= user.blogURL %> </p>
           <!-- <button type="button" class="profileEdit-btn blog-btn" name="button">Edit</button> -->
           <hr>
-          <form id="thumbnail-form" name="thumbnail" action="/profile/update/defaultImg" method="post" enctype="multipart/form-data">
+          <form id="thumbnail-form" name="thumbnail" action="/profile/<%=user.name%>/update/defaultImg" method="post" enctype="multipart/form-data">
             <label for="thumbnailImg">Default Thumbnail Image</label>
             <input type="file" id="thumbnail-input" name="thumbnailImg" accept="image/*" value="" style="display: none">
             <button type="button" id="thumbnail-edit-btn" class="profileEdit-btn blog-btn">Edit</button>
@@ -109,10 +110,10 @@
               <button type="submit" id="thumbnail-save-btn" class="profileEdit-btn left-btn" hidden="true">Save</button>
               <button type="button" id="thumbnail-cancel-btn" class="profileEdit-btn left-btn" hidden="true">Cancel</button>
             </div>
-            <img src="images/<%= user.defaultImg %>" alt="thumbnail preview" id="thumbnail-preview">
+            <img src="../images/<%= user.defaultImg %>" alt="thumbnail preview" id="thumbnail-preview">
           </form>
           <hr>
-          <form id="banner-form" name="banner" action="/profile/update/bannerImg" method="post" enctype="multipart/form-data">
+          <form id="banner-form" name="banner" action="/profile/<%=user.name%>/update/bannerImg" method="post" enctype="multipart/form-data">
             <label for="bannerImg">Banner Image</label>
             <input type="file" id="banner-input" name="bannerImg" accept="image/*" value="" style="display: none">
             <button type="button" id="banner-edit-btn" class="profileEdit-btn blog-btn">Edit</button>
@@ -120,10 +121,10 @@
               <button type="submit" id="banner-save-btn" class="profileEdit-btn left-btn" hidden="true">Save</button>
               <button type="button" id="banner-cancel-btn" class="profileEdit-btn left-btn" hidden="true">Cancel</button>
             </div>
-            <img src="images/<%= user.bannerImg %>" alt="banner preview" id="banner-preview">
+            <img src="../images/<%= user.bannerImg %>" alt="banner preview" id="banner-preview">
           </form>
           <hr>
-          <form id="featured-form" name="featured" action="/profile/update/featuredPost" method="post">
+          <form id="featured-form" name="featured" action="/profile/<%=user.name%>/update/featuredPost" method="post">
             <div class="featuredPostDiv">
               <label for="featuredPost">Featured Post</label>
               <select id="featuredPost-select" name="featuredPost" disabled>
@@ -157,9 +158,9 @@
       <div class="inputs">
           <% posts.forEach(function(post){ %>
             <hr>
-            <span> <a class="post-title-anchor" href="blog/<%=user.name%>/posts/<%=post.id%>"><%=post.title %></a></span>
+            <span> <a class="post-title-anchor" href="/blog/<%=user.name%>/posts/<%=post.id%>"><%=post.title %></a></span>
             <!-- change href after writing edit page -->
-            <span><a href="edit/<%=post.id%>"><button type="button" class="profileEdit-btn" name="button">Edit</button></a></span>
+            <span><a href="<%=user.name%>/edit/<%=post.id%>"><button type="button" class="profileEdit-btn" name="button">Edit</button></a></span>
           <% }) %>
       </div>
     </div>

@@ -263,13 +263,15 @@ function updateUserSetting(input, setting){
     // override default browser button behavior
     event.preventDefault();
     // grab new setting and its new value
+    const user = document.getElementById('current-user-name').innerHTML;
+    console.log("user: " + user);
     var settingChange = input.value;
     var params = setting + "=" + settingChange;
     console.log(params);
     // instantiate new xml http request
     var xhr = new XMLHttpRequest();
     // open request with post method and appropriate route on server
-    xhr.open("POST", "/profile/update/" + setting, true);
+    xhr.open("POST", "/profile/" + user + "/update/" + setting, true);
     // set content type of request
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
@@ -286,6 +288,10 @@ function updateUserSetting(input, setting){
     };
 
     xhr.send(params);
+    // still need to test this after I've created new users
+    if(setting == "name"){
+      document.getElementById('current-user-name').innerHTML = settingChange;
+    }
   }
 
 }
@@ -310,7 +316,7 @@ function updateUserImg(input, setting, img){
       // instantiate new xml http request
       var xhr = new XMLHttpRequest();
       // open request with post method and appropriate route on server
-      xhr.open("POST", "/profile/update/" + setting, true);
+      xhr.open("POST", "/profile/" + name.value + "/update/" + setting, true);
       // set content type of request
 
       xhr.onload = function(){

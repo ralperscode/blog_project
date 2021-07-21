@@ -2,7 +2,7 @@
 
 <div class="container quillEditor-page-contents" id="editPageContents">
   <h1>Edit Post</h1>
-  <form id="edit-form" action="/edit/<%=post.id%>" method="post">
+  <form id="edit-form" action="/profile/<%=user.name%>/edit/<%=post.id%>" method="post">
     <div class="form-group">
       <label for="title">Title</label>
       <input class="form-control" id="title" type="text" name="postTitle" value="<%=post.title%>">
@@ -30,7 +30,7 @@
   </div>
 </div>
 <div class="container fileUploadDiv editProfilePopup" id="thumbnailUploadDiv" style="display: none">
-  <form id="editThumbnailForm" action="/edit/<%=post.id%>/thumbnail" method="post" enctype="multipart/form-data">
+  <form id="editThumbnailForm" action="/profile/<%=user.name%>/edit/<%=post.id%>/thumbnail" method="post" enctype="multipart/form-data">
     <p>Select post thumbnail image.</p>
     <!-- change value to be post _ID sent from compose submit -->
     <input type="hidden" id="postID" name="postID" value= <%= post._id %> >
