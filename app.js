@@ -285,11 +285,13 @@ app.get("/about", function(req, res){
   res.render("about", {aboutContent: aboutContent});
 });
 
-app.get("/compose", function(req, res){
-  res.render("compose");
+app.get("/blog/:userName/compose", function(req, res){
+  User.findOne({name: req.params.userName}, function(err, foundUser){
+    res.render("compose", {user:foundUser});
+  });
 });
 
-app.post("/compose", function(req, res){
+app.post("/blog/:userName/compose", function(req, res){
   console.log("New post composed!");
   console.log("title: " + req.body.postTitle);
   // store conents as Buffer to save space in mongoDB
@@ -301,9 +303,9 @@ app.post("/compose", function(req, res){
     contentText: req.body.postBodyText,
     datePosted: new Date()
   });
-  User.findOne({name: "user1"}, function(err, foundUser){
+  User.findOne({name: req.params.userName}, function(err, foundUser){
     foundUser.posts.push(newPost);
-    foundUser.save().then(res.render("thumbnail", {post: newPost}));
+    foundUser.save().then(res.render("thumbnail", {post: newPost, user:foundUser}));
     // // works
     // foundUser.save(function(err){
     //   if(!err){
@@ -316,6 +318,53 @@ app.post("/compose", function(req, res){
   //   await foundUser.save();
   //   res.redirect("/");
 //});
+
+//temp get route for rendering page to style
+app.get("/blog/:userName/compose/imgUpload", function(req, res){
+  res.render("thumbnail");
+});
+
+app.post("/blog/:userName/compose/imgUpload", function (req, res) {
+  User.findOne({name: req.params.userName}, function(err, foundUser){
+    let posts = foundUser.posts;
+    upload.single("thumbnailImage")(req, res, function (err) {
+      if (err instanceof multer.MulterError) {
+        // A Multer error occurred when uploading.
+        console.log("Multer error: "+ err);
+      } else if (err) {
+        console.log("Unknown error: " + err);
+      }
+      // console.log(req.file)
+      if(!req.file){
+        console.log("no file!");
+        posts.forEach(function(post){
+          // get post id from input and find that post
+          if (post._id == req.body.postID){
+            // update post thumbnail content to point to default image
+            // id of default is stored in user profile
+            post.thumbnail = foundUser.defaultImg
+            foundUser.save().then(res.redirect("/blog/"+ foundUser.name));
+            // console.log("updated post: " + post);
+            // note: default image will be saved in thumbnails.files as well
+          }
+        });
+         // res.json({file: req.file});
+      } else{
+        console.log("file uploaded")
+        posts.forEach(function(post){
+          // get post id from input and find that post
+          if (post._id == req.body.postID){
+            // update post thumbnail content so it equals newly uploaded file
+            post.thumbnail = req.file.id
+            foundUser.save().then(res.redirect("/blog/"+ foundUser.name));
+            // console.log("updated post: " + post);
+          }
+        });
+         // res.json({file: req.file});
+      }
+    });
+  });
+});
 
 // Route for editing posts accessed from user profile
 app.get("/profile/:userName/edit/:postID", function(req, res){
@@ -426,54 +475,6 @@ User.findOne({name: req.params.userName}, function(err, foundUser){
     }
   );
 });
-});
-
-
-//temp get route for rendering page to style
-app.get("/compose/imgUpload", function(req, res){
-  res.render("thumbnail");
-});
-
-app.post("/compose/imgUpload", function (req, res) {
-  User.findOne({name: "user1"}, function(err, foundUser){
-    let posts = foundUser.posts;
-    upload.single("thumbnailImage")(req, res, function (err) {
-      if (err instanceof multer.MulterError) {
-        // A Multer error occurred when uploading.
-        console.log("Multer error: "+ err);
-      } else if (err) {
-        console.log("Unknown error: " + err);
-      }
-      // console.log(req.file)
-      if(!req.file){
-        console.log("no file!");
-        posts.forEach(function(post){
-          // get post id from input and find that post
-          if (post._id == req.body.postID){
-            // update post thumbnail content to point to default image
-            // id of default is stored in user profile
-            post.thumbnail = foundUser.defaultImg
-            foundUser.save().then(res.redirect("/blog/"+ foundUser.name));
-            // console.log("updated post: " + post);
-            // note: default image will be saved in thumbnails.files as well
-          }
-        });
-         // res.json({file: req.file});
-      } else{
-        console.log("file uploaded")
-        posts.forEach(function(post){
-          // get post id from input and find that post
-          if (post._id == req.body.postID){
-            // update post thumbnail content so it equals newly uploaded file
-            post.thumbnail = req.file.id
-            foundUser.save().then(res.redirect("/blog/"+ foundUser.name));
-            // console.log("updated post: " + post);
-          }
-        });
-         // res.json({file: req.file});
-      }
-    });
-  });
 });
 
 // Route for getting images back from Grid FS Bucket

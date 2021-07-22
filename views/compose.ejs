@@ -1,7 +1,7 @@
 <%- include("partials/header") -%>
 <div class="container quillEditor-page-contents">
   <h1>Compose</h1>
-  <form id="compose-form" action="/compose" method="post">
+  <form id="compose-form" action="/blog/<%=user.name%>/compose" method="post">
     <div class="form-group">
       <label for="title">Title</label>
       <input class="form-control" id="title" type="text" name="postTitle">

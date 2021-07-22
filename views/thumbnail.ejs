@@ -17,7 +17,7 @@
     <!-- div for image thumbnail upload -->
     <div class="container fileUploadContainer">
       <div class="container fileUploadDiv" id="thumbnailUploadDiv">
-        <form class="" action="/compose/imgUpload" method="post" enctype="multipart/form-data">
+        <form class="" action="/blog/<%=user.name%>/compose/imgUpload" method="post" enctype="multipart/form-data">
           <p>Select post thumbnail image.</p>
           <!-- change value to be post _ID sent from compose submit -->
           <input type="hidden" id="postID" name="postID" value= <%= post._id %> >
