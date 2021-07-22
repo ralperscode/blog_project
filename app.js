@@ -351,12 +351,13 @@ app.post("/blog/:userName/compose/imgUpload", function (req, res) {
          // res.json({file: req.file});
       } else{
         console.log("file uploaded")
-        posts.forEach(function(post){
+        posts.forEach(async function(post){
           // get post id from input and find that post
           if (post._id == req.body.postID){
             // update post thumbnail content so it equals newly uploaded file
             post.thumbnail = req.file.id
-            foundUser.save().then(res.redirect("/blog/"+ foundUser.name));
+            await foundUser.save();
+            res.redirect("/blog/"+ foundUser.name);
             // console.log("updated post: " + post);
           }
         });
