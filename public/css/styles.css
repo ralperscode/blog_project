@@ -466,3 +466,183 @@ label img{
 	font-size: 12px;
   color: #fff;
 }
+
+
+/* landing page styling */
+
+.landing-section-header{
+  text-align: center;
+  background-color: #eee;
+  letter-spacing: 3px;
+}
+
+.landing-section-header h1{
+  margin: 0;
+  padding: 20px 0 10px 0;
+}
+
+.landing-section-header h2{
+  margin: 0;
+  padding: 10px 0 20px 0;
+}
+
+.landing-section-header p{
+  margin: 0;
+  line-height: 2;
+  padding: 0px 250px 20px;
+}
+
+/* flex container for aligning divs on page */
+.landing-container{
+  display: flex;
+}
+
+/* landing image and login div */
+.main-landing-div-img{
+  height: 543px;
+  width: 66%;
+}
+
+.main-landing-div-img img{
+  width: 100%;
+  height: 100%;
+}
+
+.login-div{
+  width: 34%;
+  background-color: #00ADB5;
+  text-align: center;
+  position: relative;
+  padding: 4% 0;
+}
+
+.login-card{
+  background-color: #AAD8D3;
+  width: 75%;
+  margin: auto;
+  border-radius: 2%;
+}
+
+.login-card input{
+  display: inline-block;
+  background: rgba(255,255,255,.1);
+	border: none;
+	border-radius: 4px;
+	font-size: 15px;
+	margin: 0;
+	outline: 0;
+	padding: 10px;
+	width: 75%;
+	box-sizing: border-box;
+  background-color: #E4E9FD;
+	color:#8a97a0;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+  margin-bottom: 20px;
+}
+
+.login-card input:hover{
+  background-color: #E1E5EA;
+}
+
+.login-card input:focus{
+  background-color: #A7BBC7;
+}
+
+.login-card form{
+  padding: 20px;
+}
+
+.login-card button{
+  display: block;
+  margin: auto;
+  width: 75%;
+  background-color: #F7A440
+}
+
+.login-card button:hover{
+  background-color: #E1701A;
+}
+
+.login-form{
+  text-align: center;
+}
+
+.oauth-btn{
+  width: 68%;
+}
+
+.register-link{
+  font-size: 15px;
+  padding-bottom: 15px;
+}
+
+/* features container */
+#more-padding-h2{
+  padding: 20px 0 20px 0;
+}
+
+.features-one{
+  width: 50%;
+  text-align: center;
+  letter-spacing: 3px;
+  background-color: #AAD8D3;
+}
+
+.features-two{
+  width: 50%;
+  text-align: center;
+  letter-spacing: 3px;
+  background-color: #00ADB5;
+}
+
+.features img{
+  width: 95%;
+  float: left;
+  padding-left: 35px;
+  padding-bottom: 15px;
+}
+
+.features ul{
+  text-align: left;
+  padding-left: 52px;
+  line-height: 2;
+  list-style-type: disclosure-closed;
+}
+
+.features-one li::marker{
+  color: #00ADB5;
+}
+
+.features-two ul{
+  padding-bottom: 10px;
+}
+
+.features-two li::marker{
+  color: #AAD8D3;
+}
+
+.register{
+  background-color: #eee;
+  text-align: center;
+  height: 175px;
+}
+
+.register h1{
+  margin: 0;
+  padding-top: 20px;
+  padding-bottom: 35px;
+}
+
+.register-btn{
+  background-color: #00ADB5;
+  padding: 20px 25px;
+  font-size: 20px;
+  text-decoration: none;
+  color: white;
+}
+
+.register-btn:hover{
+  text-decoration: none;
+  background-color: #AAD8D3;
+  color: white;
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Daily Journal</title>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+    <!-- Bootstrap socials for login buttons -->
+    <link rel="stylesheet" href="css/bootstrap-social.css">
+    <!-- custom styles -->
+    <link rel="stylesheet" href="/css/styles.css">
+  </head>
+  <body>
+    <div class="landing-section-header">
+      <h1>The Digital Journal:</h1>
+      <h2>Your solution to no-fuss blogging.</h2>
+    </div>
+    <div class="landing-container">
+      <div class="main-landing-div-img">
+        <img src="images/blogging.jpg" alt="bloger-background">
+      </div>
+      <div class="login-div">
+        <div class="login-card">
+          <form class="login-form" action="index.html" method="post">
+            <input type="text" name="" value="" placeholder="Username">
+            <input type="email" name="" value="" placeholder="Email">
+            <input type="password" name="" value="" placeholder="Password">
+            <button class="btn" type="submit">Login</button>
+          </form>
+          <a class="btn btn-social btn-google oauth-btn" href="/auth/google" role="button">
+            <i class="fab fa-google"></i>
+            Sign In with Google
+          </a>
+          <a class="btn btn-social btn-facebook oauth-btn" href="/auth/facebook" role="button">
+            <i class="fab fa-facebook"></i>
+            Sign In with Facebook
+          </a>
+      <p class="register-link">New User? <a id="newUser" href="/register">Create Account</a></p>
+        </div>
+      </div>
+    </div>
+    <div class="landing-section-header">
+      <h2 id="more-padding-h2">Start Blogging Instantly</h2>
+      <p>Other blog sites promise endless amounts of customization.
+      We believe in one simple, intuitive, and powerful design that allows you
+    to start sharing your stories instantly. No fussing over endless customization options.
+  The Daily Journal provides you with just enough customization to add your personal falre.</p>
+    </div>
+    <div class="landing-container">
+      <div class="features features-one">
+        <h2>Powered by the Quill Rich Text Editor</h2>
+        <img src="images/Quill.png" alt="Quill Editor Example">
+        <ul>
+          <li>Style your font</li>
+          <li>Embed images and videos</li>
+          <li>Add blockquotes and code snippets</li>
+        </ul>
+      </div>
+      <div class="features features-two">
+        <h2>Add Your Personal Flare</h2>
+        <ul>
+          <li>Title your blog and recieve a custom domain to share with your readers</li>
+          <li>Add a personal banner image to your homepage</li>
+          <li>Give each post its own unique image, or use a default image selected by you</li>
+          <li>Link your social medial accounts so your readers can find your other work</li>
+        </ul>
+        <img src="images/Homepage_ex.png" alt="Homepage Example">
+      </div>
+    </div>
+    <div class="register">
+      <h1>Get Started Today</h1>
+      <a href="/register" class="register-btn">Create Your Blog</a>
+    </div>
+
+  </body>
+</html>

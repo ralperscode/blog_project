@@ -244,7 +244,7 @@ function ensureAuthentication(req, res, next){
 let posts = [];
 
 app.get("/", function(req, res){
-  res.send("Hello World");
+  res.render("landing");
 })
 
 app.get("/blog/:userName", function(req, res){
