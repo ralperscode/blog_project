@@ -646,3 +646,52 @@ label img{
   background-color: #AAD8D3;
   color: white;
 }
+
+/* register page styling */
+.register-container{
+  background-color: #eee;
+  height: 100vh;
+}
+
+.register-card{
+  margin-top: 175px;
+  border: 2px solid black;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.register-card h1{
+  margin-top: 33px;
+  margin-bottom: 100px;
+}
+
+.btn-block{
+  margin: auto;
+  width: 31%;
+  line-height: 1.88;
+  font-size: 18px;
+}
+
+.email-btn{
+  background-color: snow;
+  margin-bottom: 100px;
+}
+
+.email-btn:hover{
+  background-color: cornsilk;
+}
+
+.btn-social{
+  padding-left: 48px;
+}
+
+.btn-social>:first-child{
+  left: 2px;
+  top: 5px;
+  width: 37px;
+  font-size: 1.6rem;
+}
+
+.btn-block + .btn-block{
+  margin-top: 15px;
+}

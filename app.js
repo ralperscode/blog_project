@@ -245,7 +245,11 @@ let posts = [];
 
 app.get("/", function(req, res){
   res.render("landing");
-})
+});
+
+app.get("/register", function(req, res){
+  res.render("register");
+});
 
 app.get("/blog/:userName", function(req, res){
   User.findOne({name: req.params.userName}, function(err, foundUser){
