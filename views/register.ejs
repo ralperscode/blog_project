@@ -22,17 +22,46 @@
       <div class="container">
         <div class="register-card">
           <h1>Create An Account</h1>
-          <a class="btn btn-block btn-social btn-google oauth-btn" href="/auth/google" role="button">
-              <i class="fab fa-google"></i>
-              Sign Up with Google
-          </a>
-          <a class="btn btn-block btn-social btn-facebook oauth-btn" href="/auth/facebook" role="button">
-              <i class="fab fa-facebook"></i>
-              Sign Up with Facebook
-          </a>
-          <button class="btn btn-block btn-social email-btn" type="button" name="button"><i class="fas fa-envelope fab"></i>Sign Up with Email</button>
+          <div id="register-btns">
+            <a class="btn btn-block btn-social btn-google oauth-btn" href="/auth/google" role="button">
+                <i class="fab fa-google"></i>
+                Sign Up with Google
+            </a>
+            <a class="btn btn-block btn-social btn-facebook oauth-btn" href="/auth/facebook" role="button">
+                <i class="fab fa-facebook"></i>
+                Sign Up with Facebook
+            </a>
+            <button id="email-signup" class="btn btn-block btn-social email-btn" type="button" name="button"><i class="fas fa-envelope fab"></i>Sign Up with Email</button>
+          </div>
+          <div id="register-inputs" style="display:none">
+            <div class="input-group">
+              <label for="username-field">Username: </label>
+              <input id="username-field" type="text" name="username-field" required>
+            </div>
+            <br>
+            <div class="input-group">
+              <label for="email-field">Email: </label>
+              <input id="email-field" type="email" name="email-field" required>
+            </div>
+            <br>
+            <div class="input-group">
+              <label for="password1-field">Password: </label>
+              <input id="password1-field" type="password" name="password1-field" required>
+            </div>
+            <br>
+            <div class="input-group">
+              <label for="password2-field">Re-Enter Password: </label>
+              <input id="password2-field" type="password" name="password2-field" required>
+            </div>
+            <br>
+            <button class="btn btn-block cont-btn" type="button">Continue</button>
+            <button class="btn btn-block back-btn" type="button"> < All Sign Up Options</button>
+          </div>
         </div>
       </div>
     </div>
   </body>
+
+  <script src="/JS/register.js"></script>
+
 </html>

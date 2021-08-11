@@ -695,3 +695,46 @@ label img{
 .btn-block + .btn-block{
   margin-top: 15px;
 }
+
+#register-inputs input{
+  height: 18px;
+  background: transparent;
+	border: solid;
+  border-width: 0 0 1px 0;
+	font-size: 15px;
+	margin: 0;
+	outline: none;
+	padding: 10px;
+	box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+#register-inputs label{
+  padding-right: 7px;
+  display: inline-block;
+}
+
+.input-group{
+  margin-left: 320px;
+  text-align: left;
+  width: 50%;
+}
+
+.cont-btn{
+  background-color: #90ee90;
+  color: black;
+  border-radius: 99em;
+}
+
+.cont-btn:hover{
+  background-color: #3cb371;
+}
+
+.back-btn{
+  background-color: transparent;
+  color: blue;
+}
+
+.warning-text{
+  color: red;
+}
