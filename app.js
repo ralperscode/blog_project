@@ -251,6 +251,30 @@ app.get("/register", function(req, res){
   res.render("register");
 });
 
+app.post("/register/userInfo", function(req, res){
+  console.log("request received");
+  //hash their password with bcrypt and saltRounds defined in require block
+  bcrypt.hash(req.body["password"], saltRounds, function(err, hash){
+    // new user is created in .hash callback so we have access to the hash
+    const newUser = new User({
+      name: req.body["username"],
+      email: req.body["email"],
+      password: hash
+    });
+    // save the user and whatnot
+  });
+});
+
+app.post("/register/userInfo/nameCheck", function(req, res){
+  User.findOne({name: req.body["username"]}, function(err, foundUser){
+    if(foundUser){
+      res.send("taken");
+    } else{
+      res.send("not_taken");
+    }
+  });
+});
+
 app.get("/blog/:userName", function(req, res){
   User.findOne({name: req.params.userName}, function(err, foundUser){
     let posts = foundUser.posts

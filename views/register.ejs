@@ -34,28 +34,30 @@
             <button id="email-signup" class="btn btn-block btn-social email-btn" type="button" name="button"><i class="fas fa-envelope fab"></i>Sign Up with Email</button>
           </div>
           <div id="register-inputs" style="display:none">
-            <div class="input-group">
-              <label for="username-field">Username: </label>
-              <input id="username-field" type="text" name="username-field" required>
-            </div>
-            <br>
-            <div class="input-group">
-              <label for="email-field">Email: </label>
-              <input id="email-field" type="email" name="email-field" required>
-            </div>
-            <br>
-            <div class="input-group">
-              <label for="password1-field">Password: </label>
-              <input id="password1-field" type="password" name="password1-field" required>
-            </div>
-            <br>
-            <div class="input-group">
-              <label for="password2-field">Re-Enter Password: </label>
-              <input id="password2-field" type="password" name="password2-field" required>
-            </div>
-            <br>
-            <button class="btn btn-block cont-btn" type="button">Continue</button>
-            <button class="btn btn-block back-btn" type="button"> < All Sign Up Options</button>
+            <form id="signup-form" action="/register/userInfo" method="post">
+              <div class="input-group">
+                <label for="username-field">Username: </label>
+                <input id="username-field" type="text" name="username-field" required>
+              </div>
+              <br>
+              <div class="input-group">
+                <label for="email-field">Email: </label>
+                <input id="email-field" type="email" name="email-field" required>
+              </div>
+              <br>
+              <div class="input-group">
+                <label for="password1-field">Password: </label>
+                <input id="password1-field" type="password" name="password1-field" required>
+              </div>
+              <br>
+              <div class="input-group">
+                <label for="password2-field">Re-Enter Password: </label>
+                <input id="password2-field" type="password" name="password2-field" required>
+              </div>
+              <br>
+              <button id="continue-btn" class="btn btn-block cont-btn" type="submit">Continue</button>
+              <button class="btn btn-block back-btn" type="button"> < All Sign Up Options</button>
+            </form>
           </div>
         </div>
       </div>
