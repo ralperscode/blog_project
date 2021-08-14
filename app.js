@@ -262,7 +262,7 @@ app.post("/register/userInfo", function(req, res){
       password: hash
     });
     // save the user and end response -> no authentication or redirects as user must still select images
-    newUser.save();
+    // newUser.save();
     res.end();
   });
 });

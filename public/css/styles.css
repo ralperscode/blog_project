@@ -738,3 +738,16 @@ label img{
 .warning-text{
   color: red;
 }
+
+#img-div label{
+  padding-bottom: 20px;
+}
+
+#img-div input{
+  margin: auto 370px;
+  padding-bottom: 20px;
+}
+
+#img-div button{
+  margin: 27px auto 47px auto;
+}

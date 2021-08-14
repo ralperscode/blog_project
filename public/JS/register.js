@@ -1,14 +1,16 @@
 const email_btn = document.getElementById('email-signup');
 const btn_div = document.getElementById('register-btns');
 const input_div = document.getElementById('register-inputs');
+const img_div = document.getElementById('img-div');
 
 email_btn.addEventListener('click', function(){
   btn_div.style.display= 'none';
   input_div.style.display= 'block'
 });
 
-// continue button
+// continue and back buttons
 const continue_btn = document.getElementById('continue-btn');
+const back_btn = document.getElementById('back-btn');
 
 // register input fields
 const username_input = document.getElementById('username-field')
@@ -122,4 +124,15 @@ signup_form.addEventListener("submit", function(e){
   };
 
   xhr.send(params);
+});
+
+// onclick functions for continue and all sign up option buttons
+back_btn.addEventListener("click", function(){
+    btn_div.style.display= 'block';
+    input_div.style.display= 'none'
+});
+
+continue_btn.addEventListener("click", function(){
+  input_div.style.display= 'none'
+  img_div.style.display = "block"
 });

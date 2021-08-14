@@ -56,7 +56,16 @@
               </div>
               <br>
               <button id="continue-btn" class="btn btn-block cont-btn" type="submit">Continue</button>
-              <button class="btn btn-block back-btn" type="button"> < All Sign Up Options</button>
+              <button id="back-btn" class="btn btn-block back-btn" type="button"> < All Sign Up Options</button>
+            </form>
+          </div>
+          <div id="img-div" style="display: none">
+            <form action="/register/userInfo/img" method="post" enctype="multipart/form-data">
+              <label for="defaultThumbnail">Please Upload A Default Thumbnail Image</label>
+              <input id="defaultThumbnail" type="file" name="defaultThumbnail" accept="image/*" required>
+              <label for="banner">Please Upload A Blog Homepage Banner Image</label>
+              <input id="banner" type="file" name="banner" accept="image/*" required>
+              <button type="submit" class="btn btn-block cont-btn">Finalize Account</button>
             </form>
           </div>
         </div>
