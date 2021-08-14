@@ -261,10 +261,11 @@ app.post("/register/userInfo", function(req, res){
       email: req.body["email"],
       password: hash
     });
-    // save the user and whatnot
+    // save the user and end response -> no authentication or redirects as user must still select images
+    newUser.save();
+    res.end();
   });
 });
-
 app.post("/register/userInfo/nameCheck", function(req, res){
   User.findOne({name: req.body["username"]}, function(err, foundUser){
     if(foundUser){
