@@ -89,7 +89,7 @@ const storage = new GridFsStorage({
 });
 
 var upload = multer({
-  storage: storage, limits: {fileSize: 6000000, files: 1},
+  storage: storage, limits: {fileSize: 6000000, files: 2},
   fileFilter: function(req, file, cb){
     checkFileType(file, cb);
   }
@@ -194,7 +194,7 @@ passport.use(new LocalStrategy({
   passReqToCallback: true //needed so req.flash can be used
 },
   function(req, username, password, done){
-    User.findOne({username: username}, function(err, user){
+    User.findOne({name: username}, function(err, user){
       if(err){
         return done(err);
       }
@@ -236,7 +236,16 @@ function ensureAuthentication(req, res, next){
   if (req.isAuthenticated()){
     next();
   } else{
-    res.redirect("/login");
+    res.redirect("/");
+  }
+}
+
+function checkUser(req, res, next){
+  if (req.user.name === req.params.userName){
+    next();
+  } else{
+    req.logout();
+    res.redirect("/");
   }
 }
 
@@ -245,6 +254,11 @@ let posts = [];
 
 app.get("/", function(req, res){
   res.render("landing");
+});
+
+app.post("/login", passport.authenticate("local"), function(req, res){
+  console.log("req.user: " + req.user);
+  res.redirect("/blog/" + req.body.name);
 });
 
 app.get("/register", function(req, res){
@@ -262,10 +276,11 @@ app.post("/register/userInfo", function(req, res){
       password: hash
     });
     // save the user and end response -> no authentication or redirects as user must still select images
-    // newUser.save();
+     newUser.save();
     res.end();
   });
 });
+
 app.post("/register/userInfo/nameCheck", function(req, res){
   User.findOne({name: req.body["username"]}, function(err, foundUser){
     if(foundUser){
@@ -276,6 +291,17 @@ app.post("/register/userInfo/nameCheck", function(req, res){
   });
 });
 
+app.post("/register/userInfo/img", function(req, res){
+  upload.fields([{ name: 'defaultThumbnail', maxCount: 1 }, { name: 'banner', maxCount: 1 }])(req, res, function(err){
+    User.findOne({name: req.body.newUserName}, async function(err, foundUser){
+      foundUser.defaultImg = req.files.defaultThumbnail[0].id;
+      foundUser.bannerImg = req.files.banner[0].id;
+
+      await foundUser.save();
+      res.render("login");
+      });
+    });
+});
 app.get("/blog/:userName", function(req, res){
   User.findOne({name: req.params.userName}, function(err, foundUser){
     let posts = foundUser.posts
@@ -303,7 +329,7 @@ app.get("/blog/:userName", function(req, res){
   });
 });
 
-app.get("/profile/:userName", function(req, res){
+app.get("/profile/:userName", ensureAuthentication, checkUser, function(req, res){
   User.findOne({name: req.params.userName}, function(err, foundUser){
     const posts = foundUser.posts
     res.render("userProfile", {posts: posts, user: foundUser});
@@ -314,7 +340,7 @@ app.get("/about", function(req, res){
   res.render("about", {aboutContent: aboutContent});
 });
 
-app.get("/blog/:userName/compose", function(req, res){
+app.get("/blog/:userName/compose", ensureAuthentication, checkUser, function(req, res){
   User.findOne({name: req.params.userName}, function(err, foundUser){
     res.render("compose", {user:foundUser});
   });
@@ -349,9 +375,9 @@ app.post("/blog/:userName/compose", function(req, res){
 //});
 
 //temp get route for rendering page to style
-app.get("/blog/:userName/compose/imgUpload", function(req, res){
-  res.render("thumbnail");
-});
+// app.get("/blog/:userName/compose/imgUpload", function(req, res){
+//   res.render("thumbnail");
+// });
 
 app.post("/blog/:userName/compose/imgUpload", function (req, res) {
   User.findOne({name: req.params.userName}, function(err, foundUser){
@@ -397,7 +423,7 @@ app.post("/blog/:userName/compose/imgUpload", function (req, res) {
 });
 
 // Route for editing posts accessed from user profile
-app.get("/profile/:userName/edit/:postID", function(req, res){
+app.get("/profile/:userName/edit/:postID", ensureAuthentication, checkUser, function(req, res){
   User.findOne({name: req.params.userName}, function(err, foundUser){
     let posts = foundUser.posts;
     posts.forEach(function(post){

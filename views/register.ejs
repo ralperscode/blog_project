@@ -60,11 +60,12 @@
             </form>
           </div>
           <div id="img-div" style="display: none">
-            <form action="/register/userInfo/img" method="post" enctype="multipart/form-data">
+            <form id="img-form" action="/register/userInfo/img" method="post" enctype="multipart/form-data">
               <label for="defaultThumbnail">Please Upload A Default Thumbnail Image</label>
               <input id="defaultThumbnail" type="file" name="defaultThumbnail" accept="image/*" required>
               <label for="banner">Please Upload A Blog Homepage Banner Image</label>
               <input id="banner" type="file" name="banner" accept="image/*" required>
+              <input type="text" id="newUserName" name="newUserName" value="" hidden>
               <button type="submit" class="btn btn-block cont-btn">Finalize Account</button>
             </form>
           </div>

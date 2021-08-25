@@ -533,6 +533,7 @@ label img{
 	outline: 0;
 	padding: 10px;
 	width: 75%;
+  height: 44px;
 	box-sizing: border-box;
   background-color: #E4E9FD;
 	color:#8a97a0;
@@ -556,6 +557,7 @@ label img{
   display: block;
   margin: auto;
   width: 75%;
+  height: 44px;
   background-color: #F7A440
 }
 
@@ -569,6 +571,9 @@ label img{
 
 .oauth-btn{
   width: 68%;
+  height: 44px;
+  padding-top: 11px;
+  font-size: inherit;
 }
 
 .register-link{

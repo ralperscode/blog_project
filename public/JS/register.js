@@ -135,4 +135,37 @@ back_btn.addEventListener("click", function(){
 continue_btn.addEventListener("click", function(){
   input_div.style.display= 'none'
   img_div.style.display = "block"
+  document.getElementById('newUserName').value = username_input.value;
 });
+
+
+// ajax call for uploading images
+const img_form = document.getElementById('img-form');
+const thumbnailInput = document.getElementById('defaultThumbnail');
+const bannerInput = document.getElementById('banner');
+
+// img_form.addEventListener("submit", function(e){
+//   e.preventDefault();
+//
+//   const thumbnailImg = thumbnailInput.files[0];
+//   const bannerImg = bannerInput.files[0];
+//   var form_data = new FormData();
+//   form_data.append(thumbnailInput.name, thumbnailImg);
+//   form_data.append(bannerInput.name, bannerImg);
+//   var xhr = new XMLHttpRequest();
+//   xhr.open("POST", "/register/userInfo/" + username_input.value + "/img", true);
+//
+//   xhr.onload = function(){
+//         console.log("In onload");
+//         if(this.status == 200){
+//             console.log(xhr.response);
+//         }
+//   }
+//   // add onerror
+//   xhr.onerror = function() {
+//   alert("Request failed: Something went wrong! Please try again.");
+//   console.log("Request error");
+//   };
+//
+//   xhr.send(form_data);
+// });
