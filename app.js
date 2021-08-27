@@ -231,7 +231,6 @@ passport.deserializeUser(function(id, done) {
 });
 
 // ensureAuthentication middleware function for all secured routes
-
 function ensureAuthentication(req, res, next){
   if (req.isAuthenticated()){
     next();
@@ -240,12 +239,22 @@ function ensureAuthentication(req, res, next){
   }
 }
 
+// checkUser middleware for ensuring a logged in user isn't accessing another user's secured routes
 function checkUser(req, res, next){
   if (req.user.name === req.params.userName){
     next();
   } else{
     req.logout();
     res.redirect("/");
+  }
+}
+
+// isLoggedIn used in callback to find a logged in user for altering header button options
+function isLoggedIn(req){
+  if (req.user){
+    return (req.user.name === req.params.userName);
+  } else {
+    return false;
   }
 }
 
@@ -259,6 +268,11 @@ app.get("/", function(req, res){
 app.post("/login", passport.authenticate("local"), function(req, res){
   console.log("req.user: " + req.user);
   res.redirect("/blog/" + req.body.name);
+});
+
+app.get("/logout", function(req, res){
+  req.logout();
+  res.redirect("/");
 });
 
 app.get("/register", function(req, res){
@@ -303,9 +317,10 @@ app.post("/register/userInfo/img", function(req, res){
     });
 });
 app.get("/blog/:userName", function(req, res){
+  const loggedIn = isLoggedIn(req);
   User.findOne({name: req.params.userName}, function(err, foundUser){
     let posts = foundUser.posts
-    res.render("blog", {homeStartingContent: homeStartingContent, posts: posts, user: foundUser});
+    res.render("blog", {homeStartingContent: homeStartingContent, posts: posts, user: foundUser, isUser: loggedIn});
     // // Additional check for file type content -> not used currently.
     // // I think the checks before uploading are sufficient for determining file type
     // get all thumbnail image files
@@ -332,17 +347,17 @@ app.get("/blog/:userName", function(req, res){
 app.get("/profile/:userName", ensureAuthentication, checkUser, function(req, res){
   User.findOne({name: req.params.userName}, function(err, foundUser){
     const posts = foundUser.posts
-    res.render("userProfile", {posts: posts, user: foundUser});
+    res.render("userProfile", {posts: posts, user: foundUser, isUser: true});
   });
 });
 
-app.get("/about", function(req, res){
-  res.render("about", {aboutContent: aboutContent});
-});
+// app.get("/about", function(req, res){
+//   res.render("about", {aboutContent: aboutContent});
+// });
 
 app.get("/blog/:userName/compose", ensureAuthentication, checkUser, function(req, res){
   User.findOne({name: req.params.userName}, function(err, foundUser){
-    res.render("compose", {user:foundUser});
+    res.render("compose", {user:foundUser, isUser: true});
   });
 });
 
@@ -432,7 +447,7 @@ app.get("/profile/:userName/edit/:postID", ensureAuthentication, checkUser, func
         const utf8String = post.content.toString('utf8');
         const decoded = JSON.parse(decodeURIComponent(utf8String));
         const ops = decoded.ops;
-        res.render("editPost", {user: foundUser, post: post, delta: utf8String});
+        res.render("editPost", {user: foundUser, isUser: true, post: post, delta: utf8String});
       }
     });
   });
@@ -494,6 +509,7 @@ app.post("/profile/:userName/edit/:postID/thumbnail", function(req, res){
 });
 
 app.get("/blog/:userName/posts/:postID", function(req, res){
+const loggedIn = isLoggedIn(req);
 User.findOne({name: req.params.userName}, function(err, foundUser){
   let posts = foundUser.posts;
   posts.forEach(function(post){
@@ -526,7 +542,7 @@ User.findOne({name: req.params.userName}, function(err, foundUser){
         const decodedHTML = converter.convert();
         // add this as a key to the post before sending it to render
         post.decoded_HTML = decodedHTML;
-        res.render("post", {user: foundUser, post: post});
+        res.render("post", {user: foundUser, post: post, isUser: loggedIn});
       }
     }
   );
