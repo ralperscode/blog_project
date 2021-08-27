@@ -305,6 +305,14 @@ app.post("/register/userInfo/nameCheck", function(req, res){
   });
 });
 
+app.post("/register/userInfo/blogTitle", function(req, res){
+  User.findOne({name: req.body["username"]}, function(err, foundUser){
+    foundUser.blogTitle = req.body["title"];
+    foundUser.save();
+    res.end();
+  })
+})
+
 app.post("/register/userInfo/img", function(req, res){
   upload.fields([{ name: 'defaultThumbnail', maxCount: 1 }, { name: 'banner', maxCount: 1 }])(req, res, function(err){
     User.findOne({name: req.body.newUserName}, async function(err, foundUser){

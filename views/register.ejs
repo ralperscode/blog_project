@@ -59,6 +59,13 @@
               <button id="back-btn" class="btn btn-block back-btn" type="button"> < All Sign Up Options</button>
             </form>
           </div>
+          <div id="title-div" style="display: none">
+            <form id="title-form" action="/register/userInfo/blogTitle" method="post">
+              <label for="title">Please Select A Title For Your Blog</label>
+              <input type="text" name="title" id="title-input" value="" required>
+              <button type="submit" id="next-btn" class="btn btn-block cont-btn">Continue</button>
+            </form>
+          </div>
           <div id="img-div" style="display: none">
             <form id="img-form" action="/register/userInfo/img" method="post" enctype="multipart/form-data">
               <label for="defaultThumbnail">Please Upload A Default Thumbnail Image</label>

@@ -2,6 +2,7 @@ const email_btn = document.getElementById('email-signup');
 const btn_div = document.getElementById('register-btns');
 const input_div = document.getElementById('register-inputs');
 const img_div = document.getElementById('img-div');
+const title_div = document.getElementById('title-div');
 
 email_btn.addEventListener('click', function(){
   btn_div.style.display= 'none';
@@ -134,10 +135,47 @@ back_btn.addEventListener("click", function(){
 
 continue_btn.addEventListener("click", function(){
   input_div.style.display= 'none'
-  img_div.style.display = "block"
+  title_div.style.display = "block"
   document.getElementById('newUserName').value = username_input.value;
 });
 
+//ajax call for saving blog title to new user
+const title_form = document.getElementById('title-form');
+
+title_form.addEventListener("submit", function(e){
+  e.preventDefault();
+  // grab input values
+  const user_name = document.getElementById('newUserName').value;
+  const title = document.getElementById('title-input').value;
+  var params = "username="+user_name+"&title="+title;
+  // instantiate new xml http request
+  var xhr = new XMLHttpRequest();
+  // open request with post method and appropriate route on server
+  xhr.open("POST", "/register/userInfo/blogTitle", true);
+  // set content type of request
+  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+  xhr.onload = function(){
+        console.log("In onload");
+        if (this.status == 200){
+            console.log(xhr.responseText); //never logging -> response doesn't exist???
+        }
+  }
+  // add onerror
+  xhr.onerror = function() {
+  alert("Request failed: Something went wrong! Please try again.");
+  console.log("Request error");
+  };
+
+  xhr.send(params);
+});
+
+const next_btn = document.getElementById('next-btn');
+
+next_btn.addEventListener("click", function(){
+  title_div.style.display = "none";
+  img_div.style.display = "block";
+})
 
 // ajax call for uploading images
 const img_form = document.getElementById('img-form');

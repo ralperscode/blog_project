@@ -745,6 +745,15 @@ label img{
   color: red;
 }
 
+#title-div label{
+  display: block;
+  padding-bottom: 20px;
+}
+
+#title-div button{
+  margin: 27px auto 47px auto;
+}
+
 #img-div label{
   padding-bottom: 20px;
 }
