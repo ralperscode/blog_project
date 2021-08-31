@@ -145,15 +145,15 @@ const Post = mongoose.model("Post", postSchema);
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "User must have a name"]
+    // required: [true, "User must have a name"]
   },
   email: {
     type: String,
-    required: [true, "User must have an email"]
+    // required: [true, "User must have an email"]
   },
   password: {
     type: String,
-    required: [true, "User must have a password"]
+    // required: [true, "User must have a password"]
   },
   blogTitle: String,
   blogURL: String,
@@ -162,7 +162,8 @@ const userSchema = new mongoose.Schema({
   defaultImg: String,
   bannerImg: String,
   socialMediaLinks: {facebookLink: "", twitterLink: "", instaLink: "", githubLink: ""},
-
+  googleID: String,
+  facebookID: String
 });
 
 // add findOrCreate as plugin to userSchema for oAuth strategies
@@ -229,6 +230,29 @@ passport.deserializeUser(function(id, done) {
     done(err, user);
   });
 });
+
+// oAuth strategies
+
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_SECRET,
+    callbackURL: "http://localhost:3000/auth/google/home",
+    userProfileURL:"https://www.googleapis.com/oauth2/v3/userinfo" //must add for google redirect to work
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    const email = profile.emails[0].value;
+    var userName = ""
+    for (var i = 0; i < email.length; i++) {
+      if(email[i] === "@"){
+        break
+      } else{
+        userName += email[i]
+      }
+    }
+    User.findOrCreate({ googleID: profile.id }, {name: userName, email: email}, function (err, user) {
+      return cb(err, user);
+    });
+}));
 
 // ensureAuthentication middleware function for all secured routes
 function ensureAuthentication(req, res, next){
@@ -324,6 +348,22 @@ app.post("/register/userInfo/img", function(req, res){
       });
     });
 });
+
+// oAuth Routes
+
+// Google
+app.get("/auth/google",
+  passport.authenticate('google', { scope: ['profile','email'] }));
+
+// this is the route called when a user successfully logs in with google
+// simply authenticates user and redirects home
+app.get("/auth/google/home",
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    function(req, res) {
+      // Successful authentication, redirect home.
+      res.redirect('/blog/' + req.user.name);
+    });
+
 app.get("/blog/:userName", function(req, res){
   const loggedIn = isLoggedIn(req);
   User.findOne({name: req.params.userName}, function(err, foundUser){
