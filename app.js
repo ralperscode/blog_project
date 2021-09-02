@@ -361,20 +361,14 @@ app.get("/auth/google/home",
     passport.authenticate('google', { failureRedirect: '/login' }),
     function(req, res) {
       // Successful authentication, check if user is new and redirect to appropriate route
-      console.log(req.user.blogTitle);
-      console.log(req.user.blogTitle === undefined);
       if (req.user.blogTitle === undefined){
-        console.log("in if, about to redirect")
         res.redirect('/oauth/register/userinfo');
       } else{
-        console.log("why am i here?")
         res.redirect('/blog/' + req.user.name);
       }
     });
 
 app.get("/oauth/register/userinfo", ensureAuthentication, function(req, res){
-  console.log("in oauth register get route, about to render oauthRegister page");
-  console.log("req.user.name: " + req.user.name);
   res.render("oauthRegister", {user: req.user.name});
 });
 
@@ -383,7 +377,6 @@ app.post("/oauth/register/userInfo/img", function(req, res){
     User.findOne({name: req.body.newUserName}, async function(err, foundUser){
       foundUser.defaultImg = req.files.defaultThumbnail[0].id;
       foundUser.bannerImg = req.files.banner[0].id;
-
       await foundUser.save();
       res.redirect("/blog/" + foundUser.name);
       });
