@@ -249,7 +249,29 @@ passport.use(new GoogleStrategy({
         userName += email[i]
       }
     }
-    User.findOrCreate({ googleID: profile.id }, {name: userName, email: email}, function (err, user) {
+    User.findOrCreate({ email: email }, {googleID: profile.id, name: userName}, function (err, user) {
+      return cb(err, user);
+    });
+}));
+
+passport.use(new FacebookStrategy({
+    clientID: process.env.FACEBOOK_TEST_ID,
+    clientSecret: process.env.FACEBOOK_TEST_SECRET,
+    callbackURL: "http://localhost:3000/auth/facebook/home",
+    proxy: true,
+    profileFields: ['id', 'name', 'emails']
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    const email = profile.emails[0].value;
+    var userName = ""
+    for (var i = 0; i < email.length; i++) {
+      if(email[i] === "@"){
+        break
+      } else{
+        userName += email[i]
+      }
+    }
+    User.findOrCreate({ email: email }, {facebookID: profile.id, name: userName}, function (err, user) {
       return cb(err, user);
     });
 }));
@@ -359,6 +381,20 @@ app.get("/auth/google",
 // simply authenticates user and redirects home
 app.get("/auth/google/home",
     passport.authenticate('google', { failureRedirect: '/login' }),
+    function(req, res) {
+      // Successful authentication, check if user is new and redirect to appropriate route
+      if (req.user.blogTitle === undefined){
+        res.redirect('/oauth/register/userinfo');
+      } else{
+        res.redirect('/blog/' + req.user.name);
+      }
+    });
+
+app.get("/auth/facebook",
+    passport.authenticate("facebook", {scope: ['email']}));
+
+app.get('/auth/facebook/home',
+    passport.authenticate('facebook', { failureRedirect: '/login' }),
     function(req, res) {
       // Successful authentication, check if user is new and redirect to appropriate route
       if (req.user.blogTitle === undefined){
@@ -708,6 +744,7 @@ app.listen(3000, function() {
 
 // POTENTIAL BUGS
 //1. updating username and blogURL not working perfectly. Re-check after authentication / login is implemented
+//2. The way oAuth login creates user names could lead to duplicates. Best solution would be to re-work all db queries to search by ID rather than name
 
 //expansion ideas
 //1. make authentication and login abilities for multiple users
