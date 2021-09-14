@@ -336,6 +336,45 @@ function updateUserImg(input, setting, img){
   }
 }
 
+// validate username with ajax post call -> app.js route uses res.send() to send
+// message of taken or not_taken. Use this to display p element message to user and
+// lock form submission until fixed
+// username availability check
+name.addEventListener("input", function(){
+  const username = name.value;
+  var params = "username=" + username;
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/register/userInfo/nameCheck", true);
+  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+  xhr.onload = function(){
+        console.log("In onload");
+        if (this.status == 200){
+            console.log(xhr.responseText);
+            if(this.responseText === "taken"){
+              var warning = document.createElement("P");
+              warning.innerHTML = "Username not available."
+              warning.classList.add("warning-text");
+              warning.id = "username-warning"
+              name.insertAdjacentElement("afterend", warning);
+              nameSaveBtn.setAttribute('disabled', true);
+            } else {
+              if(document.getElementById('username-warning')){
+                document.getElementById('username-warning').remove();
+                nameSaveBtn.removeAttribute('disabled');
+              }
+            }
+        }
+  }
+  // add onerror
+  xhr.onerror = function() {
+  alert("Request failed: Something went wrong! Please try again.");
+  console.log("Request error");
+  };
+
+  xhr.send(params);
+})
+
 // add event listener to forms for when they are submitted
 nameForm.addEventListener("submit", updateUserSetting(name, "name"));
 emailForm.addEventListener("submit", updateUserSetting(email, "email"));
@@ -348,3 +387,21 @@ titleForm.addEventListener("submit", updateUserSetting(title, "blogTitle"));
 thumbnailForm.addEventListener("submit", updateUserImg(thumbnail, "defaultImg", thumbnailPreview));
 bannerForm.addEventListener("submit", updateUserImg(banner, "bannerImg", bannerPreview));
 featuredForm.addEventListener("submit", updateUserSetting(featuredPost, "featuredPost"));
+
+
+// additional event listener for name save button that updates all fields with new username when name is changed
+nameSaveBtn.addEventListener("click", function(){
+  const newName = name.value;
+  document.getElementById('blog-url').innerHTML = "localhost:3000/blog/" + newName;
+  document.getElementById('home').firstElementChild.href = "/blog/" + newName;
+  document.getElementById('compose').firstElementChild.href = "/blog/" + newName + "/compose";
+  document.getElementById('profile').firstElementChild.href = "/profile/" + newName;
+  const postTitleList = document.getElementsByClassName('post-title-anchor');
+  const postEditList = document.getElementsByClassName('post-edit-anchor');
+  for (var i = 0; i < postTitleList.length; i++) {
+    var id = postTitleList[i].href.slice(-24);
+    postTitleList[i].href = "/blog/" + newName + "/posts/" + id;
+    postEditList[i].href = newName + "/edit/" + id;
+  }
+});
+// remember to change password for users who don't oauth login
