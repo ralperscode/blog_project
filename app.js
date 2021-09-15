@@ -726,9 +726,18 @@ app.post("/profile/:userName/update/:userSetting", function(req, res){
     });
   } else if (settingToChange === "facebookLink" || settingToChange === "twitterLink" || settingToChange === "instaLink" || settingToChange === "githubLink"){
       foundUser.socialMediaLinks[settingToChange] = req.body[settingToChange] // req.body contains the new setting value
-    } else{
+  } else if (settingToChange ==="password"){
+    bcrypt.hash(req.body[settingToChange], saltRounds, function(err, hash){
+      console.log("in bycrpt callback");
+      console.log(foundUser);
+      console.log("new hash: " + hash);
+      foundUser[settingToChange] = hash
+      console.log("post update password: " + foundUser[settingToChange]);
+      foundUser.save();
+      });
+  } else{
       foundUser[settingToChange] = req.body[settingToChange];
-    }
+  }
     if (settingToChange === "name"){
       foundUser.blogURL = "localhost:3000/blog/" + req.body[settingToChange]
     }
