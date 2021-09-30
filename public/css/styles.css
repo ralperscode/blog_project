@@ -142,6 +142,26 @@ margin-top: 1em;
   margin-bottom: 10px;
 }
 
+/* social media link styling */
+.social-links{
+  position: absolute;
+  left: 20px;
+  top: 420px;
+  letter-spacing: 3px;
+}
+
+.social-links a{
+  text-decoration: none;
+  color: black;
+}
+
+.social-links a:link{
+  text-decoration: none;
+}
+
+.social-links a:visited{
+  text-decoration: none;
+}
 /* quill editor styling */
 
 .quill-div{

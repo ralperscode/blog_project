@@ -375,6 +375,21 @@ name.addEventListener("input", function(){
   xhr.send(params);
 })
 
+// social media link validation
+
+function validateSocialLink(input, saveBtn, social){
+  var currentValue = input.value;
+  if(!currentValue.includes(social) || !currentValue.includes(".com")){
+    saveBtn.setAttribute('disabled', true);
+  } else{
+    saveBtn.removeAttribute('disabled');
+  }
+}
+
+fb.addEventListener("input", validateSocialLink.bind(null, fb, fbSaveBtn, "facebook"));
+twitter.addEventListener("input", validateSocialLink.bind(null, twitter, twitterSaveBtn, "twitter"));
+insta.addEventListener("input", validateSocialLink.bind(null, insta, instaSaveBtn, "instagram"));
+github.addEventListener("input", validateSocialLink.bind(null, github, githubSaveBtn, "github"));
 // add event listener to forms for when they are submitted
 nameForm.addEventListener("submit", updateUserSetting(name, "name"));
 emailForm.addEventListener("submit", updateUserSetting(email, "email"));

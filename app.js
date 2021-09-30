@@ -725,6 +725,21 @@ app.post("/profile/:userName/update/:userSetting", function(req, res){
       }
     });
   } else if (settingToChange === "facebookLink" || settingToChange === "twitterLink" || settingToChange === "instaLink" || settingToChange === "githubLink"){
+      // START BY CHECKING IF THIS WORKS!!!
+      var linkStart = ""
+      for (var i = 0; i < 11; i++) {
+       linkStart+= req.body[settingToChange][i]
+     }
+     let www = false;
+     if(linkStart[0] === "w" && linkStart[1] === "w" && linkStart[2] === "w" && linkStart[3] === "."){
+       req.body[settingToChange] = "https://" + req.body[settingToChange]
+       www = true;
+     }
+       console.log("linkStart: " + linkStart);
+       console.log((linkStart !== "https://www"))
+       if((linkStart !== "https://www" && linkStart !== "http://www.") && !www){
+         req.body[settingToChange] = "https://www." + req.body[settingToChange]
+       }
       foundUser.socialMediaLinks[settingToChange] = req.body[settingToChange] // req.body contains the new setting value
   } else if (settingToChange ==="password"){
     bcrypt.hash(req.body[settingToChange], saltRounds, function(err, hash){

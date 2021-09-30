@@ -47,7 +47,20 @@
   </article>
     <hr class="article-hr">
 <% } %>
-
+<div class="social-links">
+  <% if(user.socialMediaLinks.facebookLink){ %>
+    <a href="<%=user.socialMediaLinks.facebookLink%>"><i class="fab fa-facebook fa-lg"></i></a>
+  <% } %>
+  <% if(user.socialMediaLinks.twitterLink){ %>
+    <a href="<%=user.socialMediaLinks.twitterLink%>"><i class="fab fa-twitter fa-lg"></i></a>
+  <% } %>
+  <% if(user.socialMediaLinks.instaLink) { %>
+    <a href="<%=user.socialMediaLinks.instaLink%>"><i class="fab fa-instagram fa-lg"></i></a>
+  <% } %>
+  <% if(user.socialMediaLinks.githubLink){ %>
+    <a href="<%=user.socialMediaLinks.githubLink%>"><i class="fab fa-github fa-lg"></i></a>
+  <% } %>
+</div>
 <%- include("partials/footer") -%>
 
 <%# could do something like this but would need to make it a script after page loads %>
